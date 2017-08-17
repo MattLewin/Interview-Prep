@@ -101,8 +101,8 @@ extension String {
 "😀😁😂😊🙃".isPermutation(of: "🙃😂😀😁😊")
 
 /*: ---
- ## 1.3 URLify: Write a method to replace all spaces in a string with '%20'. You may assume that the string has sufficient space at the end to hold the additional characters, and that you are given the "true" length of the string.
- - Note: if implementing in Java, please use a character array so that you can perform this operation in place.
+ ## 1.3 URLify: Write a method to replace all spaces in a string with '%20'. 
+ You may assume that the string has sufficient space at the end to hold the additional characters, and that you are given the "true" length of the string. If implementing in Java, please use a character array so that you can perform this operation in place.
  
  - Example: Input:    `"Mr John Smith    ", 13`\
             Output    `"Mr%20John%20Smith"`
@@ -151,3 +151,40 @@ int main() {
 ````
 */
 
+/*: ---
+ ## 1.4 Palindrome Permutations: Give a string, write a function to check if it is a permutation of a palindrome.
+ A palindrom is a word or phrase that is the same forward and backward. A permutation is a rearrangement of letters. The palindrome does not need to be limited to dictionary words.
+ 
+ *Observations:* Because a palindrome is the same forward and backward, an even-length palindrome must have an even number of each letter, and an odd-length palindrome must have exactly one letter with an odd number of occurrences.
+ 
+ *Plan:*
+ * Traverse string, counting characters while doing so.
+ * For each character, if it is in the set, remove it. If it is not in the set, add it.
+ * If the string is even-length, the set should be empty. If the string is odd-length, there should be only one key in the set
+ */
+func isPalindrome(_ string: String) -> Bool {
+    var characterCount = 0
+    var charSet = Set<Character>()
+
+    for char in string.lowercased().characters {
+        guard char != " ".characters.first else { continue }
+
+        characterCount += 1
+
+        if charSet.contains(char) {
+            charSet.remove(char)
+        }
+        else {
+            charSet.insert(char)
+        }
+    }
+
+    // For even-length strings, set should contain 0 elements. For odd-length, it should contain 1.
+    return (characterCount % 2) == charSet.count
+}
+
+isPalindrome("aba")
+isPalindrome("abba")
+isPalindrome("madam my name is adam")
+isPalindrome("Red rum sir is murder")
+isPalindrome("tact coa")
