@@ -188,3 +188,87 @@ isPalindrome("abba")
 isPalindrome("madam my name is adam")
 isPalindrome("Red rum sir is murder")
 isPalindrome("tact coa")
+
+/*: ---
+ ## 1.5 One Away: There are three types of edits that can be performed on strings: insert a character, remove a character, or replace a character. Given two strings, write a function to check if they are one edit (or zero edits) away.
+ 
+ - Example:
+ ```
+ pale, ple -> true
+ pales, pale -> true
+ pale, bale -> true
+ pale, bake -> false
+ ```
+ */
+
+func isOneAway(_ s1: String, _ s2: String) -> Bool {
+    switch s1.characters.count - s2.characters.count {
+    case 0: // same length
+        return processSameLength(s1, s2)
+
+    case -1: // s2 longer than s1
+        return processOneAway(longer: s2, shorter: s1)
+
+    case 1: // s1 longer than s2
+        return processOneAway(longer: s1, shorter: s2)
+
+    default: // string lengths differ by more than 1
+        return false
+
+    }
+}
+
+func processSameLength(_ s1: String, _ s2: String) -> Bool {
+    var changeFound = false
+    var s1Copy = s1
+    var s2Copy = s2
+
+    repeat {
+        let s1Head = s1Copy.characters.first
+        let s2Head = s2Copy.characters.first
+        s1Copy = String(s1Copy.characters.dropFirst())
+        s2Copy = String(s2Copy.characters.dropFirst())
+
+        guard s1Head != s2Head else { continue }
+
+        // s1Head != s2Head
+
+        if changeFound == true { return false }
+
+        changeFound = true
+    } while s1Copy.characters.count > 0
+
+    return true
+}
+
+func processOneAway(longer s1: String, shorter s2: String) -> Bool {
+    var changeFound = false
+    var s1Copy = s1
+    var s2Copy = s2
+
+    repeat {
+        let s1Head = s1Copy.characters.first
+        let s2Head = s2Copy.characters.first
+        s1Copy = String(s1Copy.characters.dropFirst())
+
+        guard s1Head != s2Head else {
+            s2Copy = String(s2Copy.characters.dropFirst())
+            continue
+        }
+        // s1Head != s2Head
+
+        if changeFound == true { return false }
+        changeFound = true
+    } while s1Copy.characters.count > 0
+
+    return true
+}
+
+isOneAway("pale", "ple")
+isOneAway("pale", "ple")
+isOneAway("pales", "pale")
+isOneAway("pale", "bale")
+isOneAway("pale", "bake")
+isOneAway("ple", "pale")
+isOneAway("abcde", "abc")
+isOneAway("abcde", "abcde")
