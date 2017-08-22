@@ -263,3 +263,43 @@ isOneAway("pale", "bake")
 isOneAway("ple", "pale")
 isOneAway("abcde", "abc")
 isOneAway("abcde", "abcde")
+
+/*: ---
+ 1.6 String Compression: Implement a method to perform basic string compression using the coutns of repeated characters. For example, the string `aabcccccaaa` would become `a2b1c5a3`. If the "compressed" string would not become smaller than the original string, return the original string. You can assume the string has only upppercase and lowercase letters (a-z).
+ */
+
+func compress(_ str: String) -> String {
+    var result = [Character]()
+    var previousChar: Character?
+    var count = 0
+
+    for char in str.characters {
+        if previousChar == nil {
+            previousChar = char
+            count = 1
+            result.append(char)
+        }
+        else if char == previousChar {
+            count += 1
+        }
+        else { // new character
+            result.append(contentsOf: count.description.characters)
+            previousChar = char
+            count = 1
+            result.append(char)
+        }
+    }
+
+    result.append(contentsOf: count.description.characters)
+
+    if result.count > str.characters.count {
+        return str
+    }
+    else {
+        return String(result)
+    }
+}
+
+compress("abcd")
+compress("aabbccdd")
+compress("aabcccccaaa")
