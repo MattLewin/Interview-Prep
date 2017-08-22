@@ -224,17 +224,11 @@ func processSameLength(_ s1: String, _ s2: String) -> Bool {
     var s2Copy = s2
 
     repeat {
-        let s1Head = s1Copy.characters.first
-        let s2Head = s2Copy.characters.first
-        s1Copy = String(s1Copy.characters.dropFirst())
-        s2Copy = String(s2Copy.characters.dropFirst())
+        let s1Head = s1Copy.characters.removeFirst()
+        let s2Head = s2Copy.characters.removeFirst()
 
         guard s1Head != s2Head else { continue }
-
-        // s1Head != s2Head
-
         if changeFound == true { return false }
-
         changeFound = true
     } while s1Copy.characters.count > 0
 
@@ -247,16 +241,13 @@ func processOneAway(longer s1: String, shorter s2: String) -> Bool {
     var s2Copy = s2
 
     repeat {
-        let s1Head = s1Copy.characters.first
+        let s1Head = s1Copy.characters.removeFirst()
         let s2Head = s2Copy.characters.first
-        s1Copy = String(s1Copy.characters.dropFirst())
 
         guard s1Head != s2Head else {
-            s2Copy = String(s2Copy.characters.dropFirst())
+            s2Copy.characters.removeFirst()
             continue
         }
-        // s1Head != s2Head
-
         if changeFound == true { return false }
         changeFound = true
     } while s1Copy.characters.count > 0
