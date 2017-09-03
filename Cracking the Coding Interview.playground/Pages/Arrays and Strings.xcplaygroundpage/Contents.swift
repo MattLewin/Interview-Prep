@@ -441,3 +441,60 @@ let matrix2 = [
 ]
 
 zeroOutRowsAndColumns(matrix2)
+
+/*: ---
+ ## 1.9 String Rotation: Assume you have a method `isSubstring` which checks if one word is a substring of another. Given two strings, `s1` and `s2`, write code to check if `s2` is a rotation of `s1` using only one call to `isSubstring`. (e.g., "`erbottlewat`" is a rotation of "`waterbottle`".)
+
+ - Note: I came up with a solution, but I feel like it cheats because it uses the Swift equivalent of `strcmp`, which must reasonably be off limits in this problem. (The key hint is that only `isSubstring` can be used.)
+
+ * Callout(Solution Logic): If we imagine that `s2` is a rotation of `s1`, then we can ask what the rotation point is. For example, if you rotate `waterbottle` after `wat`, you get `erbottlewat`. In a rotation, we cut `s1` into two parts, `x` and `y`, and rearrange them to get `s2`.
+
+    `s1 = xy = waterbottle`
+
+    `x = wat`
+
+    `y = erbottle`
+
+    `s2 = yx = erbottlewat`
+
+    So we need to check if there's a way to split `s1` into `x` and `y` such that `xy = s1` and `yx = s2`. Regardless of where the division between `x` and `y` is, we can see that `yx` will always be a substring of `xyxy`. That is `s2` will always be a substring of `s1s1`.
+
+    The first solution below is an implementation of this idea. The second one is my craptastic initial solution.
+ */
+func isRotation2(_ s2: String, of s1: String) -> Bool {
+    guard s1.characters.count > 0, s2.characters.count == s1.characters.count else { return false }
+
+    let s1s1 = s1 + s1
+    return s1s1.contains(s2) // `contains` is effectively, `isSubstring`
+}
+
+isRotation2("ERBOTTLEWAT", of: "WATERBOTTLE")
+isRotation2("WATERBOTTLE", of: "WATERBOTTLE")
+isRotation2("ERBOTTLEWAT", of: "WATERBUTTLE")
+
+func BSisRotation(_ s2: String, of s1: String) -> Bool {
+    let s1chars = s1.characters
+    let s2chars = s2.characters
+    guard s1chars.count == s2chars.count else { return false }
+
+    var s2index = 1
+
+    repeat {
+        let s2slice = s2chars.suffix(s2index)
+        let s1slice = s1chars.prefix(s2index)
+        if s2slice.elementsEqual(s1slice) {
+            // The three lines below are equivalent to isSubstring. I doubt this is a legitimate way to solve this problem, though.
+            let s2headSlice = s2chars.prefix(s2chars.count - s2index)
+            let s1tailSlice = s1chars.suffix(s2chars.count - s2index)
+            return s2headSlice.elementsEqual(s1tailSlice)
+        }
+
+        s2index += 1
+    } while s2index < s2chars.count // Note: if s1 == s2, it's not a rotation
+
+    return false
+}
+
+BSisRotation("ERBOTTLEWAT", of: "WATERBOTTLE")
+BSisRotation("WATERBOTTLE", of: "WATERBOTTLE")
+BSisRotation("ERBOTTLEWAT", of: "WATERBUTTLE")
