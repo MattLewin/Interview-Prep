@@ -375,3 +375,69 @@ tempMatrix = charMatrix as [[Any]]
 rotate(&tempMatrix)
 charMatrix = tempMatrix as! [[String]]
 
+/*: ---
+ ## 1.8 Zero Matrix: Write an algorithm such that, if an element in an `NxM` matrix is 0, its entire row and column are set to 0.
+ 
+ - Note: The trick here is to not set any rows or columns to zero until we know which rows and/or columns initially contain zeros.
+ */
+func zeroOutRowsAndColumns(_ matrix: [[Int]]) -> [[Int]]? {
+    guard matrix.count > 0, matrix[0].count > 0 else { return nil }
+
+    var zeroedRows = Set<Int>()
+    var zeroedColumns = Set<Int>()
+
+    for row in 0..<matrix.count {
+        for column in 0..<matrix[0].count {
+            if matrix[row][column] == 0 {
+                zeroedRows.insert(row)
+                zeroedColumns.insert(column)
+            }
+        }
+    }
+
+    guard zeroedRows.count > 0 || zeroedColumns.count > 0 else { return matrix }
+
+    var newMatrix = matrix
+
+    for row in zeroedRows {
+        zeroRow(row, &newMatrix)
+    }
+
+    for column in zeroedColumns {
+        zeroColumn(column, &newMatrix)
+    }
+
+    return newMatrix
+}
+
+func zeroRow(_ row: Int, _ matrix: inout [[Int]]) {
+    for column in 0..<matrix[0].count {
+        matrix[row][column] = 0
+    }
+}
+
+func zeroColumn(_ column: Int, _ matrix: inout [[Int]]) {
+    for row in 0..<matrix.count {
+        matrix[row][column] = 0
+    }
+}
+
+let matrix1 = [
+    [1,2,3,4,5,6,7,8],
+    [1,2,3,4,5,6,7,8],
+    [1,2,3,4,5,6,7,8],
+    [1,2,3,4,5,6,7,8],
+    [1,2,3,4,5,6,7,8],
+]
+
+zeroOutRowsAndColumns(matrix1)
+
+let matrix2 = [
+    [1,2,3,4,5,6,7,8],
+    [1,2,0,4,5,6,7,8],
+    [1,2,3,4,5,6,7,8],
+    [1,2,3,4,5,0,7,8],
+    [1,2,3,4,5,6,7,8],
+]
+
+zeroOutRowsAndColumns(matrix2)
