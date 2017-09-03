@@ -265,9 +265,8 @@ isOneAway("abcde", "abc")
 isOneAway("abcde", "abcde")
 
 /*: ---
- 1.6 String Compression: Implement a method to perform basic string compression using the coutns of repeated characters. For example, the string `aabcccccaaa` would become `a2b1c5a3`. If the "compressed" string would not become smaller than the original string, return the original string. You can assume the string has only upppercase and lowercase letters (a-z).
+ ## 1.6 String Compression: Implement a method to perform basic string compression using the coutns of repeated characters. For example, the string `aabcccccaaa` would become `a2b1c5a3`. If the "compressed" string would not become smaller than the original string, return the original string. You can assume the string has only upppercase and lowercase letters (a-z).
  */
-
 func compress(_ str: String) -> String {
     var result = [Character]()
     var previousChar: Character?
@@ -303,3 +302,76 @@ func compress(_ str: String) -> String {
 compress("abcd")
 compress("aabbccdd")
 compress("aabcccccaaa")
+
+/*: ---
+ ## 1.7 Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4 bytes, write a method to roate the image by 90º. Can you do this in place?
+ 
+ - Note: We are going to rotate in layers. We perform a circular rotation on each layer, moving the top edge to the right edige, the right edge to the bottom edge, the bottom edge to the left edge, and the left edge to the top edge. We can do this by copying the top edge to an array, and then move the left to the top, the bottom to the left, and so on. This requires `O(N)` memory, which is actually unnecessary.
+
+    A better way to do this is to implement the swap index by index. In this case, we do the following:
+ ```
+ for i = 0 to n
+    temp = top[i]
+    top[i] = left[i]
+    left[i] = bottom[i]
+    bottom[i] = right[i]
+    right[i] = temp
+ ```
+ 
+ - Note: We perform such a swap on each layer, starting from the outermost later and working our way inward.
+
+ - Remark: I came up with a solution, but it was inefficient. Below is the solution from the book.
+ */
+func rotate( _ matrix: inout [[Any]]) -> Bool {
+    guard matrix.count != 0, matrix[0].count != 0 else { return false }
+    for layer in 0..<(matrix.count / 2) {
+        let first = layer
+        let last = matrix.count - 1 - layer
+        for i in first..<last {
+            let offset = i - first
+            let top = matrix[first][i]  // save top
+
+            // top = left
+            matrix[first][i] = matrix[last-offset][first]
+
+            // left = bottom
+            matrix[last-offset][first] = matrix[last][last-offset]
+
+            // bottom = right
+            matrix[last][last-offset] = matrix[i][last]
+
+            // right = (save) top
+            matrix[i][last] = top
+        }
+    }
+
+    return true
+}
+
+var intMatrix = [
+    [1,2,3,4,5,6,7,8],
+    [11,12,13,14,15,16,17,18],
+    [21,22,23,24,25,26,27,28],
+    [31,32,33,34,35,36,37,38],
+    [41,42,43,44,45,46,47,48],
+    [51,52,53,54,55,56,57,58],
+    [61,62,63,64,65,66,67,68],
+    [71,72,73,74,75,76,77,78],
+]
+
+var tempMatrix = intMatrix as [[Any]]
+rotate(&tempMatrix)
+intMatrix = tempMatrix as! [[Int]]
+
+var charMatrix = [
+    ["A", "B", "C", "D", "E"],
+    ["F", "G", "H", "I", "J"],
+    ["K", "L", "M", "N", "O"],
+    ["P", "Q", "R", "S", "T"],
+    ["U", "V", "W", "X", "Y"],
+]
+
+tempMatrix = charMatrix as [[Any]]
+rotate(&tempMatrix)
+charMatrix = tempMatrix as! [[String]]
+
