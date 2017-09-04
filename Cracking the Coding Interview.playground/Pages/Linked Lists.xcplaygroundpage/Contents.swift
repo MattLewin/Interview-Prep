@@ -103,18 +103,12 @@ print("element=\(element?.value ?? "0")")
  Result: nothing is returned, but the new linked list is a->b->d->e->f
  ```
  
- * Callout(Plan): Since we can access all successors but not our predecessor, we replace the value in each node with the one from its successor. (This assumes the value in a `Node` is mutable.)
+ * Callout(Plan): Since we can access our successor but not our predecessor, we replace `value` and `next` in this node with those in our successor.
  */
 func delete<T: Hashable>(_ node: Node<T>) {
-    var currentNode = node
-    guard currentNode.next != nil else { return }
-    while currentNode.next!.next != nil {
-        currentNode.value = currentNode.next!.value
-        currentNode = currentNode.next!
-    }
-
-    currentNode.value = currentNode.next!.value
-    currentNode.next = nil
+    guard let nextNode = node.next else { return }
+    node.value = nextNode.value
+    node.next = nextNode.next
 }
 
 let deleteTestList = makeListFrom("ABCDEF")
