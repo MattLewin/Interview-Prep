@@ -5,7 +5,8 @@
  * [Sorting Algorithms](Sorting)
  * [Individual Examples](Small%20CtCI%20Examples)
  * [Arrays and Strings](Arrays%20and%20Strings)
- 
+ * [Linked Lists](Linked%20Lists)
+
  */
 
 //: [Next](@next)
