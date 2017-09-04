@@ -95,6 +95,32 @@ func findElement<T: Hashable>(k: Int, fromEndOf list: Node<T>) -> Node<T>? {
 let element = findElement(k: 3, fromEndOf: strList)
 print("element=\(element?.value ?? "0")")
 
+/*: ---
+ ## 2.3 Delete Middle Node: Implement an algorithm to delete a node in the middle (i.e., any node but the first and last nodes, not necessarily the exact middle) of a singly linked list, given only access to that node.
+ 
+ ```
+ Input: the node c from the linked list a->b->c->d->e->f
+ Result: nothing is returned, but the new linked list is a->b->d->e->f
+ ```
+ 
+ * Callout(Plan): Since we can access all successors but not our predecessor, we replace the value in each node with the one from its successor. (This assumes the value in a `Node` is mutable.)
+ */
+func delete<T: Hashable>(_ node: Node<T>) {
+    var currentNode = node
+    guard currentNode.next != nil else { return }
+    while currentNode.next!.next != nil {
+        currentNode.value = currentNode.next!.value
+        currentNode = currentNode.next!
+    }
+
+    currentNode.value = currentNode.next!.value
+    currentNode.next = nil
+}
+
+let deleteTestList = makeListFrom("ABCDEF")
+let cNode = deleteTestList.next!.next!
+delete(cNode)
+print(deleteTestList.description())
 
 
 //: ---

@@ -9,7 +9,7 @@ import Foundation
 
 public class Node<T: Hashable> {
     public var next: Node?
-    public let value: T
+    public var value: T
 
     init(value: T) {
         self.value = value
