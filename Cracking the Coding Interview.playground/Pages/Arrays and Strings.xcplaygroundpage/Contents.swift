@@ -1,4 +1,5 @@
 //: [Previous](@previous)  [Next](@next)
+//: ---
 import Foundation
 
 //: # Arrays and Strings
@@ -498,3 +499,6 @@ func BSisRotation(_ s2: String, of s1: String) -> Bool {
 BSisRotation("ERBOTTLEWAT", of: "WATERBOTTLE")
 BSisRotation("WATERBOTTLE", of: "WATERBOTTLE")
 BSisRotation("ERBOTTLEWAT", of: "WATERBUTTLE")
+
+//: ---
+//: [Previous](@previous)  [Next](@next)
