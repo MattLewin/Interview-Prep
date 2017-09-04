@@ -1,28 +1,8 @@
 //: [Previous](@previous)
-//: ---
-
-import Foundation
-
-//: # Linked Lists
 
 /*: ---
  ## 2.1 Remove Dups: Write an algorithm to remove duplicate elements from an unsorted linked list
  */
-
-class Node<T: Hashable> {
-    var next: Node?
-    let value: T
-
-    func description() -> String {
-        guard next != nil else { return "value:\(value)" }
-        return "value:\(value)\n" + next!.description()
-    }
-
-    init(value: T) {
-        self.value = value
-    }
-}
-
 func removeDups<T: Hashable>(from list: Node<T>) {
     var uniques = Set<T>()
     var currentNode = list
@@ -31,6 +11,7 @@ func removeDups<T: Hashable>(from list: Node<T>) {
 
     while currentNode.next != nil {
         let nextNode = currentNode.next!
+        guard nextNode.next != nil else { return }
         if uniques.contains(nextNode.value) {
             currentNode.next = nextNode.next!
         }
@@ -41,27 +22,12 @@ func removeDups<T: Hashable>(from list: Node<T>) {
     }
 }
 
-var list1 = Node(value: 1)
-var node2 = Node(value: 2)
-node2.next = list1
-list1 = node2
+var intList = makeIntList(count: 4)
 
-node2 = Node(value: 3)
-node2.next = list1
-list1 = node2
+print(intList.description())
 
-node2 = Node(value: 4)
-node2.next = list1
-list1 = node2
-
-node2 = Node(value: 3)
-node2.next = list1
-list1 = node2
-
-//print(list1.description())
-
-removeDups(from: list1)
-print(list1.description())
+removeDups(from: intList)
+print(intList.description())
 
 //: **Follow up:** how would you solve this problem if a temporary buffer is not allowed?
 
@@ -70,6 +36,7 @@ func removeDupsNoBuffer<T: Hashable>(from list: Node<T>) {
 
     while currentNode.next != nil {
         var runner = currentNode.next!
+        guard runner.next != nil else { return }
         if runner.value == currentNode.value {
             currentNode.next = runner.next
         }
@@ -88,24 +55,47 @@ func removeDupsNoBuffer<T: Hashable>(from list: Node<T>) {
     }
 }
 
-list1 = Node(value: 1)
-node2 = Node(value: 2)
-node2.next = list1
-list1 = node2
+intList = makeIntList(count: 6)
 
-node2 = Node(value: 3)
-node2.next = list1
-list1 = node2
+print(intList.description())
+removeDupsNoBuffer(from: intList)
+print(intList.description())
 
-node2 = Node(value: 4)
-node2.next = list1
-list1 = node2
+let charList = makeCharacterList(count: 15)
+print(charList.description())
+removeDups(from: charList)
+print(charList.description())
 
-node2 = Node(value: 3)
-node2.next = list1
-list1 = node2
+let strList = makeListFrom("ABCDEFG")
+print(strList.description())
 
-removeDupsNoBuffer(from: list1)
-print(list1.description())
+/*: ---
+ ## 2.2 Return Kth to last element: implement an algorithm to find the Kth to last element of a singly-linked list
+ 
+ * Callout(Plan): Create two pointers, `seeking` and `trailing`, pointing at the head of the list. Walk `seeking` through the list until it reaches the `K`th element of the list. Walk both `seeking` and `trailing` until `seeking` reaches the end of the list. Return the element `trailing` points at.
+ */
+func findElement<T: Hashable>(k: Int, fromEndOf list: Node<T>) -> Node<T>? {
+    var seeking = list
+    var trailing = list
+
+    for _ in 0..<k {
+        guard seeking.next != nil else { return nil }
+
+        seeking = seeking.next!
+    }
+
+    while seeking.next != nil {
+        seeking = seeking.next!
+        trailing = trailing.next!
+    }
+
+    return trailing
+}
+
+let element = findElement(k: 3, fromEndOf: strList)
+print("element=\(element?.value ?? "0")")
 
 
+
+//: ---
+//: [Previous](@previous)  [Next](@next)
