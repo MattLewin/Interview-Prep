@@ -168,5 +168,57 @@ print("list w/o X value : \(partitionList.description())")
 partition(partitionList, by: "E")
 print("partition by 'E' : \(partitionList.description())")
 
+/*: ---
+ ## 2.5 Sum Lists: You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in *reverse* order, such that the 1's digit is at the head of the list. Write a function that adds the two numbers and returns the sum as a linked list.
+ 
+ - Example:
+    Input: (7 -> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
+ 
+    Output: (2 -> 1 -> 9). That is, 912.
+ */
+func sumReversedLists(_ list1: Node<Int>, _ list2: Node<Int>) -> Node<Int>? {
+    var runner1: Node<Int>? = list1
+    var runner2: Node<Int>? = list2
+    var result: Node<Int>?
+    var resultEnd: Node<Int>?
+    var carryTheOne: Int = 0
+
+    while runner1 != nil || runner2 != nil {
+        var sum = carryTheOne
+        if runner1 != nil {
+            sum += runner1!.value
+            runner1 = runner1!.next
+        }
+
+        if runner2 != nil {
+            sum += runner2!.value
+            runner2 = runner2!.next
+        }
+
+        carryTheOne = sum / 10
+        sum %= 10
+
+        if result == nil { // first time through
+            result = Node<Int>(value: sum)
+            resultEnd = result
+        }
+        else {
+            resultEnd!.next = Node<Int>(value: sum)
+            resultEnd = resultEnd!.next
+        }
+    }
+
+    if carryTheOne == 1 {
+        resultEnd!.next = Node<Int>(value: 1)
+    }
+
+    return result
+}
+
+var sumList1 = makeReversedListFrom(617)!
+var sumList2 = makeReversedListFrom(295)!
+let sumResult = sumReversedLists(sumList1, sumList2)!
+print("(\(sumList1.description())) + (\(sumList2.description())) = (\(sumResult.description()))")
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
