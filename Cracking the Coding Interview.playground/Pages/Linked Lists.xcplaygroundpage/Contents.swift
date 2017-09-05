@@ -228,5 +228,47 @@ print("(\(sumList1.description())) + (\(sumList2.description())) = (\(sumResult.
 
 //: Skipping this for now, because it's annonyingly cumbersome. I would do it using recursion and passing the remainder along.
 
+
+/*: ---
+ ## 2.6 Palindrome: Implement a function to check if a linked list is a palindrome
+ 
+ * Callout(Plan):
+    1. traverse list, counting nodes and building a new list by prepending erach value we find (this gives us a reversed version of the initial list)
+    2. traverse and compare the first `length/2` elements of both lists, returning false if they don't match, true otherwise
+ */
+func isPalindrome(_ list: Node<Character>) -> Bool {
+    var reversed: Node<Character>?
+    var runner: Node<Character>? = list
+    var length: Int = 0
+
+    // build reversed list and increment length
+    while runner != nil {
+        let newNode = Node<Character>(value: runner!.value)
+        newNode.next = reversed
+        reversed = newNode
+        length += 1
+        runner = runner!.next
+    }
+
+    // compare first length/2 elements of the two lists
+    runner = list
+    for _ in 0..<length / 2 {
+        guard runner!.value == reversed!.value else { return false }
+        runner = runner!.next
+        reversed = reversed!.next
+    }
+
+    return true
+}
+
+let palindromeTest1 = makeListFrom("aba")
+print("(\(palindromeTest1.description)) is a palindrome: \(isPalindrome(palindromeTest1))")
+let palindromeTest2 = makeListFrom("abba")
+print("(\(palindromeTest2.description())) is a palindrome: \(isPalindrome(palindromeTest2))")
+let palindromeTest3 = makeListFrom("abca")
+print("(\(palindromeTest3.description())) is a palindrome: \(isPalindrome(palindromeTest3))")
+let palindromeTest4 = makeListFrom("redrumsirismurder")
+print("(\(palindromeTest4.description())) is a palindrome: \(isPalindrome(palindromeTest4))")
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
