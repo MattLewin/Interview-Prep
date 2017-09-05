@@ -11,7 +11,7 @@ public class Node<T: Hashable> {
     public var next: Node?
     public var value: T
 
-    init(value: T) {
+    public init(value: T) {
         self.value = value
     }
 
@@ -56,3 +56,40 @@ public func makeListFrom(_ string: String) -> Node<Character> {
     return list!
 }
 
+public func makeListFrom(_ number: Int) -> Node<Int>? {
+    var list: Node<Int>?
+    var num = number
+
+    while num > 0 {
+        let digit = num % 10
+        let nextNode = Node<Int>(value: digit)
+
+        nextNode.next = list
+        list = nextNode
+        num /= 10
+    }
+
+    return list
+}
+
+public func makeReversedListFrom(_ number: Int) -> Node<Int>? {
+    var list: Node<Int>?
+    var listEnd: Node<Int>?
+    var num = number
+
+    while num > 0 {
+        let digit = num % 10
+        if list == nil {
+            list = Node<Int>(value: digit)
+            listEnd = list!
+        }
+        else {
+            listEnd!.next = Node<Int>(value: digit)
+            listEnd = listEnd!.next
+        }
+
+        num /= 10
+    }
+
+    return list
+}
