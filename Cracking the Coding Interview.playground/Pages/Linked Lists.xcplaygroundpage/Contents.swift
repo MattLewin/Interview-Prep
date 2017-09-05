@@ -116,6 +116,57 @@ let cNode = deleteTestList.next!.next!
 delete(cNode)
 print(deleteTestList.description())
 
+/*: ---
+ ## 2.4 Partition a linked list around a value `X` such that all values less than `X` come before all values greater than or equal to `X`. Numbers larger than `X` can come before `X`, as long as no smaller numbers come before any number `X` or greater.
+ 
+ * Callout(Plan): walk the list until we encounter a number `X` or greater. Keep a reference, `target`, to that element, and increment the other pointer until we find a number less than `X`. Swap the two values. Increment `target` to the next element. Traverse with the second pointer until we either find a number less than `X` or reach the end of the list. Each time we find a number less than `X`, swap it with `target` element and increment `target`.
+ 
+ - Note: The solution below is unlike the two solutions offered in the book, but it is a legitimate solution that uses O(N) storage and takes O(N) time.
+*/
+func partition<T: Hashable & Comparable>(_ list: Node<T>, by x: T) {
+    var seeker: Node<T>? = list
+
+    // find first value >= X in list
+    while seeker != nil, seeker!.value < x {
+        seeker = seeker!.next
+    }
+
+    guard seeker != nil else { return }
+    var target = seeker!
+
+    // find next value less than x
+    while seeker != nil {
+        if seeker!.value >= x {
+            seeker = seeker!.next
+            continue
+        }
+
+        // found value to swap
+        let temp = target.value
+        target.value = seeker!.value
+        seeker!.value = temp
+        target = target.next!
+        seeker = seeker!.next
+    }
+}
+
+var partitionList = makeListFrom("ABCDCEFABGHC")
+print("list to partition: \(partitionList.description())")
+partition(partitionList, by: "C")
+print("partition by 'C' : \(partitionList.description())")
+
+partitionList = makeListFrom("ABCDCEFABGHC")
+partition(partitionList, by: "E")
+print("partition by 'E' : \(partitionList.description())")
+
+partitionList = makeListFrom("ABCDCEFABGHC")
+partition(partitionList, by: "B")
+print("partition by 'B' : \(partitionList.description())")
+
+partitionList = makeListFrom("ABCDCFFABGHC")
+print("list w/o X value : \(partitionList.description())")
+partition(partitionList, by: "E")
+print("partition by 'E' : \(partitionList.description())")
 
 //: ---
 //: [Previous](@previous)  [Next](@next)
