@@ -220,5 +220,13 @@ var sumList2 = makeReversedListFrom(295)!
 let sumResult = sumReversedLists(sumList1, sumList2)!
 print("(\(sumList1.description())) + (\(sumList2.description())) = (\(sumResult.description()))")
 
+/*:
+ ## FOLLOW UP
+
+ Suppose the digits are stored in forward order. Repeat the above problem.
+ */
+
+//: Skipping this for now, because it's annonyingly cumbersome. I would do it using recursion and passing the remainder along.
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
