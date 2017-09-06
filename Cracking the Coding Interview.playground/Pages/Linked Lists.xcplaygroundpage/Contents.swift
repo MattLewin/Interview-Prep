@@ -270,5 +270,47 @@ print("(\(palindromeTest3.description())) is a palindrome: \(isPalindrome(palind
 let palindromeTest4 = makeListFrom("redrumsirismurder")
 print("(\(palindromeTest4.description())) is a palindrome: \(isPalindrome(palindromeTest4))")
 
+/*: ---
+ ## 2.7 Intersection: Given two singly-linked lists, determine if the two lists intersect. Return the intersecting node.
+ 
+ - Note: Intersection is defined as the same node (by reference), not just a node containing the same value
+ 
+ * Callout(Plan): Traverse the first list adding each node (or its address) to a Set. Traverse the second list, checking each node (or its address) for existence in the set.
+ 
+ * Callout(Questions):
+    1. Are `Node`s `Hashable`? Not to my knowledge.
+ 2. Can we get the address of a `Node`? Maybe. (Yes, see [General Helpers](../../Sources/General%20Helpers.swift).)
+ */
+func intersection<T: Hashable>(between list1: Node<T>, and list2: Node<T>) -> Node<T>? {
+    var nodes = Set<Int>()
+    var runner = list1
+
+    while runner.next != nil {
+        nodes.insert(intAddress(of: runner))
+        runner = runner.next!
+    }
+
+    runner = list2
+    while runner.next != nil {
+        if nodes.contains(intAddress(of: runner)) {
+            return runner
+        }
+
+        runner = runner.next!
+    }
+
+    return nil
+}
+
+let intersectionList = makeListFrom("ABCDEF")
+let intersectionListC = intersectionList.next?.next
+let intersectionList2 = makeListFrom("QRS")
+let intersectionList2End = intersectionList2.next?.next
+intersectionList2End?.next = intersectionListC
+
+print("intersectionList: \(intersectionList.description())")
+print("intersectionList2: \(intersectionList2.description())")
+print("intersection(between: intersectionList, and: intersectionList2): \(intersection(between: intersectionList, and: intersectionList2)!.description())")
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
