@@ -21,6 +21,12 @@ public class Node<T: Hashable> {
     }
 }
 
+public func end<T: Hashable>(of list: Node<T>) -> Node<T> {
+    var runner = list
+    while runner.next != nil { runner = runner.next! }
+    return runner
+}
+
 public func makeIntList(count: Int) -> Node<Int> {
     var list = Node<Int>(value: Int(arc4random_uniform(UInt32(count + 1))))
     for _ in 1..<count {

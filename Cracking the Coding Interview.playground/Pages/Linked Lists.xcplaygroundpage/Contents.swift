@@ -312,5 +312,69 @@ print("intersectionList: \(intersectionList.description())")
 print("intersectionList2: \(intersectionList2.description())")
 print("intersection(between: intersectionList, and: intersectionList2): \(intersection(between: intersectionList, and: intersectionList2)!.description())")
 
+/*: ---
+ ## 2.8 Loop Detection: given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
+ 
+ * Callout(Definition): Circular linked list: A (corrupt) linked list in which a node's next pointer points to an earlier node, so as to make a loop in the linked list.
+ 
+ - Example:
+    Input:  `A -> B -> C -> D -> E -> C` [the same `C` as earlier]
+ 
+    Output: `C`
+ 
+ * Callout(Plan): Walk the list, storing the address of each node in a `Set`. If the address already exists in the set, we have found our loop node.
+ */
+func loopExists<T: Hashable>(in list: Node<T>) -> Node<T>? {
+    var nodes = Set<Int>()
+    var runner = list
+    while runner.next != nil {
+        let address = intAddress(of: runner)
+        guard !nodes.contains(address) else { return runner }
+        nodes.insert(address)
+        runner = runner.next!
+    }
+
+    return nil
+}
+
+let nonLoopingList = makeListFrom("ABCDE")
+let loopingList = makeListFrom("ABCDE")
+let loopingListC = loopingList.next?.next
+let loopingListEnd = end(of: loopingList)
+loopingListEnd.next = loopingListC
+
+loopExists(in: nonLoopingList)
+loopExists(in: loopingList)?.value
+
+//: While my solution *does* work, the book has another solution that relies upon the `FastRunner / SlowRunner` approach. Here it is...
+
+func loopExists2<T: Hashable>(in list: Node<T>) -> Node<T>? {
+    var slow: Node<T>? = list
+    var fast: Node<T>? = list
+
+    // Find meeting point. This will be `LOOP_SIZE - k` steps into the linked list.
+    while fast != nil && fast?.next != nil {
+        slow = slow!.next
+        fast = fast!.next!.next
+        if slow === fast { break }
+    }
+
+    // Error check - no meeting point, and therefore no loop
+    if fast == nil || fast?.next == nil { return nil }
+
+    // Move `slow` to head. Keep `fast` at collision point. Each are `k` steps from the loop start. If they move at the same pace, they must meet as loop start.
+    slow = list
+    while slow !== fast {
+        slow = slow!.next
+        fast = fast!.next
+    }
+
+    // Both now point at the start of the loop
+    return fast
+}
+
+loopExists(in: nonLoopingList)
+loopExists(in: loopingList)?.value
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
