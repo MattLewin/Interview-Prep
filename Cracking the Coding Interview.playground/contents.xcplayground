@@ -6,5 +6,6 @@
         <page name='Small CtCI Examples'/>
         <page name='Arrays and Strings'/>
         <page name='Linked Lists'/>
+        <page name='Stacks and Queues'/>
     </pages>
 </playground>
