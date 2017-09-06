@@ -1,4 +1,8 @@
 //: [Previous](@previous)
+//: ---
+//: # Linked Lists
+import Foundation
+
 
 /*: ---
  ## 2.1 Remove Dups: Write an algorithm to remove duplicate elements from an unsorted linked list

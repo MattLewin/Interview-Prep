@@ -1,8 +1,8 @@
 //: [Previous](@previous)  [Next](@next)
 //: ---
-import Foundation
 
 //: # Arrays and Strings
+import Foundation
 
 /*: ---
  ## 1.1 **Is Unique:** Implement an algorithm to determine if a string has all unique characters.
