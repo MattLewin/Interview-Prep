@@ -17,6 +17,8 @@ public class Stack<T> {
         }
     }
 
+    public init() { }
+
     public enum Errors: Error {
         case Empty // Tried to pop empty stack
     }
@@ -50,6 +52,31 @@ public class Stack<T> {
     public func isEmpty() -> Bool {
         return top == nil
     }
+
+    public func description() -> String {
+        var output = "["
+        var node = top
+        var first = true
+
+        guard !isEmpty() else {
+            return "Empty"
+        }
+
+        while node != nil {
+            if !first {
+                output += ", "
+            }
+            else {
+                first = false
+            }
+
+            output += String(describing: node!.data)
+            node = node!.next
+        }
+
+        output += "]"
+        return output
+    }
 }
 
 public class Queue<T> {
@@ -66,6 +93,8 @@ public class Queue<T> {
         case NoSuchElement // Tried to reference an empty queue
     }
 
+    public init() { }
+    
     private var first: QueueNode<T>?
     private var last: QueueNode<T>?
 
@@ -103,5 +132,27 @@ public class Queue<T> {
 
     public func isEmpty() -> Bool {
         return first == nil
+    }
+
+    public func description() -> String {
+        guard first != nil else {
+            return "Empty"
+        }
+
+        var output = "["
+        var runner = first
+
+        while runner != nil {
+            output += String(describing: runner!.data)
+
+            if runner !== last {
+                output += ", "
+            }
+
+            runner = runner!.next
+        }
+
+        output += "]"
+        return output
     }
 }
