@@ -26,12 +26,13 @@ public class Stack<T> {
     private var top: StackNode<T>?
 
     public func pop() throws -> T {
-        guard var top = self.top else {
+        guard let currentTop = self.top else {
             throw Errors.Empty
         }
 
-        let item = top.data
-        top = top.next!
+        let item = currentTop.data
+        top = currentTop.next!
+
         return item
     }
 
