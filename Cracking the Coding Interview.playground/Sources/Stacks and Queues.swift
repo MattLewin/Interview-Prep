@@ -31,7 +31,7 @@ public class Stack<T> {
         }
 
         let item = currentTop.data
-        top = currentTop.next!
+        top = currentTop.next
 
         return item
     }
