@@ -101,5 +101,103 @@ do {
     print("Attempt to pop empty stack \(stackNo)")
 }
 
+/*: ---
+ ## 3.2 Stack Min: How would you design a stack that, in addition to `push` and `pop`, has a function, `min`, that returns the minimum element? `Push`, `pop`, and `min` should all operate in `O(1)` time.
+ 
+ * Callout(Plan):
+    A. Include minimum value in stack as part of the element data structure
+ 
+    B. Keep a separate stack for minimums
+ 
+    (A) is good if the stack is not huge. If it *is* huge, we burn an extra `sizeof(item)` for each stack element, when the minimum value may change infrequently
+ 
+    (B) is good if the stack is huge, because we only grow the 'min stack' when we push a new minimum
+ 
+    Let's do (B)
+ 
+
+ * Callout(Implementation Details):
+    - `peek()` should return top value per ususal
+    - `push()` should push onto minimum stack if new value is <= top of minimum stack. (Pushing equal so we can pop equal values and still maintain the prior minimum.)
+    - `pop()` should pop the minimum stack if existing top.value == minimum
+ */
+struct StackWithMin<T: Comparable> {
+    private var stack = Stack<T>()
+    private var minStack = Stack<T>()
+
+    public func peek() throws -> T {
+        return try stack.peek()
+    }
+
+    public func isEmpty() -> Bool { return stack.isEmpty() }
+
+    public func push(_ item: T) {
+        if stack.isEmpty() {
+            stack.push(item)
+            minStack.push(item)
+        }
+        else {
+            let min = try! minStack.peek()
+            if item <= min {
+                minStack.push(item)
+            }
+            stack.push(item)
+        }
+    }
+
+    public func pop() throws -> T {
+        do {
+            let item = try stack.pop()
+            let min = try minStack.peek()
+            if item <= min {
+                _ = try! minStack.pop()
+            }
+            return item
+        } catch {
+            throw error
+        }
+    }
+
+    public func min() throws -> T {
+        return try minStack.peek()
+    }
+
+    public func description() -> String {
+        var output = "        Stack: " + stack.description() + "\n"
+        output    += "Minimum Stack: " + minStack.description() + "\n"
+
+        return output
+    }
+}
+
+var stackWithMin = StackWithMin<Int>()
+
+let rangeTop = 5
+for i in 1..<rangeTop {
+    stackWithMin.push(rangeTop - i + 10)
+    stackWithMin.push(rangeTop - i)
+    stackWithMin.push((rangeTop - i) * 10 + i)
+}
+stackWithMin.push(999)
+
+print("\n3.2 Stack with min(): Test 1:")
+print(stackWithMin.description())
+
+print("\n3.2 Stack with min(): Test 2:")
+print("stackWithMin.min() == 1: \(try! stackWithMin.min() == 1)")
+
+print("\n3.3 Stack with min(): Test 3:")
+try print("stackWithMin.pop() == 999: \(stackWithMin.pop() == 999)")
+
+print("\n3.3 Stack with min(): Test 4:")
+for _ in 0..<3 {
+    try! stackWithMin.pop()
+}
+try print("stackWithMin.min() == 2: \(stackWithMin.min() == 2)")
+
+print("\n3.3 Stack with min(): Current Stack State:")
+print(stackWithMin.description())
+
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
