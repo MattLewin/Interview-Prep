@@ -274,6 +274,17 @@ struct SetOfStacks<T> {
         return item
     }
 
+    public mutating func popAt(substack: Int) throws -> T {
+        guard substack <= currentStack, !allStacks[substack].stack.isEmpty() else {
+            throw Stack<T>.Errors.Empty
+        }
+
+        let substack = allStacks[substack]
+        let item = try! substack.stack.pop()
+        substack.count -= 1
+        return item
+    }
+
     private mutating func addStack() {
         currentStack += 1
         if allStacks.count <= currentStack {
@@ -309,6 +320,8 @@ print(plates.description())
 
 print("plates.peek() = \(try! plates.peek())")
 print("plates.isEmpty() = \(plates.isEmpty())")
+print("plates.pop() = \(try! plates.pop())")
+print("plates.popAt(substack: 1) = \(try! plates.popAt(substack: 1))")
 print("plates.pop() = \(try! plates.pop())")
 print("plates:")
 print(plates.description())
