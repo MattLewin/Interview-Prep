@@ -198,6 +198,135 @@ try print("stackWithMin.min() == 2: \(stackWithMin.min() == 2)")
 print("\n3.3 Stack with min(): Current Stack State:")
 print(stackWithMin.description())
 
+/*: ---
+ ## 3.3 Stack of Plates: Imagine a literal stack of plates. If the stack gets too high, it might topple. Therefore, in real life, we would likely start a new stack when the previous stack exceeds some threshold. Implement a data structure, `SetofStacks` that mimics this. `SetOfStacks` should be composed of several stacks and should create a new stack once the previous one exceeds capacity. `SetOfStacks.push()` and `SetOfStacks.pop()` should behave identically to a single stack. (That is, `pop()` should return the same values as if there were just a single stack.)
+ 
+ * Callout(Follow Up): Implement a function `popAt(int index)` that performs a pop operation on a specific substack.
+ 
+
+ * Callout(Plan):
+    - Data structure needs one or more stacks => array, list, or stack of substacks. 
+        - The stack of substacks is out, because `popAt` will be unreasonably difficult to implement with a stack of substacks.
+        - A linked list allows us to harvest empty stack nodes versus keeping around unused array elements. Each empty stack in an array, though, will consume almost no memory. Thus, we are going with an array.
+
+    - Initializer needs a threshold parameter
+ 
+    - Data structure must contain a count of elements in each stack => a substack structure
+ 
+ 
+ * Callout(Implementation Details):
+    - `Substack`: element count, stack
+    - `SetOfStacks`: array of substacks, threshold, current stack num
+    - `pop()`  : when last element of current substack is popped, decrement current stack num. Don't go below 0
+    - `push()` : if current substack's element count equals threshold, append empty stack to array
+    - `popAt()`: simply index the stack array
+ */
+struct SetOfStacks<T> {
+    class Substack<T> {
+        var count = 0
+        var stack = Stack<T>()
+
+        func description(indentation: Int = 0) -> String {
+            let indent = String(repeating: "  ", count: indentation)
+            var output = indent + "[\n"
+            output += indent + "  count: \(count)\n"
+            output += indent + "  stack: \(stack.description())\n"
+            output += indent + "]\n"
+            return output
+        }
+    }
+
+    var allStacks = [Substack<T>()]
+    let threshold: Int
+    var currentStack = 0
+
+    public init(threshold: Int) {
+        self.threshold = threshold
+    }
+
+    public func isEmpty() -> Bool {
+        return allStacks[0].stack.isEmpty()
+    }
+
+    public func peek() throws -> T {
+        guard !allStacks[0].stack.isEmpty() else { throw Stack<T>.Errors.Empty }
+        return try! allStacks[currentStack].stack.peek()
+    }
+
+    public mutating func push(_ item: T) {
+        if allStacks[currentStack].count == threshold { addStack() }
+
+        let substack = allStacks[currentStack]
+        substack.stack.push(item)
+        substack.count += 1
+    }
+
+    public mutating func pop() throws -> T {
+        guard !allStacks[0].stack.isEmpty() else { throw Stack<T>.Errors.Empty }
+
+        let substack = allStacks[currentStack]
+        let item = try! substack.stack.pop()
+        substack.count -= 1
+        if substack.count == 0 && currentStack != 0 {
+            currentStack -= 1
+        }
+
+        return item
+    }
+
+    private mutating func addStack() {
+        currentStack += 1
+        if allStacks.count <= currentStack {
+            allStacks.append(Substack<T>())
+        }
+    }
+
+    public func description() -> String {
+        var output = "[\n"
+        output += "  threshold:\(threshold)\n"
+        output += "  currentStack:\(currentStack)\n"
+        output += "  allStacks:\n"
+        for i in 0...currentStack {
+            output += allStacks[i].description(indentation: 1)
+        }
+        output += "]\n"
+        return output
+    }
+}
+
+print("---------- 3.3 Stack of Plates ----------")
+
+var plates = SetOfStacks<Int>(threshold: 5)
+
+for i in 0..<5 {
+    plates.push(i)
+    plates.push(i + 10)
+    plates.push(i * 10 + i)
+}
+plates.push(999)
+print("plates:")
+print(plates.description())
+
+print("plates.peek() = \(try! plates.peek())")
+print("plates.isEmpty() = \(plates.isEmpty())")
+print("plates.pop() = \(try! plates.pop())")
+print("plates:")
+print(plates.description())
+print("popping plates until empty")
+var output = "["
+repeat {
+    output += "\(try! plates.pop()) "
+} while !plates.isEmpty()
+output += "]"
+print(output)
+print("plates:")
+print(plates.description())
+print("plates.isEmpty() = \(plates.isEmpty())")
+do {
+    print("plates.pop() (should fail) = \(try plates.pop())")
+} catch {
+    print("plates.pop() failed. error: \(error)")
+}
 
 //: ---
 //: [Previous](@previous)  [Next](@next)
