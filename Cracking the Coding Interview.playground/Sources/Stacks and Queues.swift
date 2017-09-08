@@ -6,6 +6,55 @@ import Foundation
  Helper methods and data structures
  */
 
+public struct Stack<Element> {
+    var items = [Element]()
+
+    public init() { }
+
+    public enum Errors: Error {
+        case Empty // Tried to pop empty stack
+    }
+
+    public mutating func pop() throws -> Element {
+        guard items.count > 0 else { throw Errors.Empty }
+        return items.removeLast()
+    }
+
+    public mutating func push(_ item: Element) {
+        items.append(item)
+    }
+
+    public func isEmpty() -> Bool {
+        return items.count == 0
+    }
+
+    public func peek() throws -> Element {
+        guard items.count > 0 else { throw Errors.Empty }
+        return items.last!
+    }
+
+    public func description() -> String {
+        guard items.count > 0 else { return "Empty" }
+        var first = true
+        var output = "["
+
+        for item in items.reversed() {
+            if !first {
+                output += ", "
+            }
+            else {
+                first = false
+            }
+
+            output += String(describing: item)
+        }
+
+        output += "]"
+        return output
+    }
+}
+
+/*
 public class Stack<T> {
 
     fileprivate class StackNode<T> {
@@ -79,6 +128,7 @@ public class Stack<T> {
         return output
     }
 }
+*/
 
 public class Queue<T> {
     fileprivate class QueueNode<T> {

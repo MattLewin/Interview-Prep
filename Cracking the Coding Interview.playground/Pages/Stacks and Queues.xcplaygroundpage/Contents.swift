@@ -125,13 +125,13 @@ struct StackWithMin<T: Comparable> {
     private var stack = Stack<T>()
     private var minStack = Stack<T>()
 
-    public func peek() throws -> T {
+    public mutating func peek() throws -> T {
         return try stack.peek()
     }
 
     public func isEmpty() -> Bool { return stack.isEmpty() }
 
-    public func push(_ item: T) {
+    public mutating func push(_ item: T) {
         if stack.isEmpty() {
             stack.push(item)
             minStack.push(item)
@@ -145,7 +145,7 @@ struct StackWithMin<T: Comparable> {
         }
     }
 
-    public func pop() throws -> T {
+    public mutating func pop() throws -> T {
         do {
             let item = try stack.pop()
             let min = try minStack.peek()
