@@ -512,5 +512,56 @@ for char in "ABDCE".characters {
 print("Peeking at sorted stack: \(try! ss.peek())")
 print("SortedStack: \(String(describing: ss))")
 
+/*: ---
+ ## 3.5 (redux): I misread the problem. The challenge was to sort an (unsorted) stack using at most one other stack. I've already looked at the answer, so I don't know what I would have come up with. Here's what the book provides.
+ 
+ * Callout(Plan): We will build a stack sorted from highest to lowest, and then reverse it by putting it back into the original stack
+    1. Pop the top of the unsorted stack, `s1`, and store that value in a temporary variable
+    2. Find the correct place in the sorted stack, `s2`, to store this value. The correct place is above the first element less than it.
+    3. Finding the correct place, requires us to pop `s2` until it's either empty, or we find a value less than the element we are pushing. We push all these popped values onto `s1` temporarily.
+    4. Push our temp value onto `s2`
+    5. Repeat until `s1` is empty
+    6. Reverse `s2` by popping each element and pushing it into `s1`
+ 
+ * Complexity: `O(N^2)` time and `O(N)` space
+ */
+func sort<T:Comparable>(_ s1: inout Stack<T>) {
+    var s2 = Stack<T>()
+    while !s1.isEmpty() {
+        // Insert each element in s1 in sorted order into s2.
+        let tmp = try! s1.pop()
+        while !s2.isEmpty() && (try! s2.peek() > tmp) {
+            s1.push(try! s2.pop())
+        }
+        s2.push(tmp)
+    }
+
+    // Copy the elements from s2 back to s1
+    while !s2.isEmpty() {
+        s1.push(try! s2.pop())
+    }
+}
+
+print("\n\n---------- 3.5 (redux) Sort a Stack ----------\n")
+var stackToSort = Stack<Character>()
+print("testing sort(:) with the characters in the string, \"STACK\"")
+for char in "STACK".characters {
+    stackToSort.push(char)
+}
+print("unsorted stackToSort: \(String(describing: stackToSort))")
+sort(&stackToSort)
+print("  sorted stackToSort: \(String(describing: stackToSort))")
+
+print("")
+
+stackToSort = Stack<Character>()
+print("testing sort(:) with the characters in the string, \"ABDCE\"")
+for char in "ABDCE".characters {
+    stackToSort.push(char)
+}
+print("unsorted stackToSort: \(String(describing: stackToSort))")
+sort(&stackToSort)
+print("  sorted stackToSort: \(String(describing: stackToSort))")
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
