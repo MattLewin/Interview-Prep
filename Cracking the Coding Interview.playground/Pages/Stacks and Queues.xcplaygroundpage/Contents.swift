@@ -341,5 +341,67 @@ do {
     print("plates.pop() failed. error: \(error)")
 }
 
+/*: ---
+ ## 3.4 Queue via Stacks: Implement `MyQueue`, which implements a queue using two stacks.
+ 
+ * Callout(Plan): The FIFO nature of a queue can be implemented by having "tail" and "head" stacks. When `enqueu`ing, we push the new element onto the "tail" stack. This means the first-in element will always be at the bottom of that stack. When `dequeu`ing, we `pop()` the top element of the "head" stack. If that stack is empty, we "move" the "tail" stack to the "head" stack. "Move" in this context means `pop`ping each element from the "tail" stack and `push`ing it onto the "head" stack. This will leave the "head" stack with the elments `pop`able in FIFO order.
+ */
+struct MyQueue<T> {
+    var headStack = Stack<T>() // dequeue ops
+    var tailStack = Stack<T>() // enqueue ops
+
+    public enum Errors: Error {
+        case Empty  // dequeue() called on empty queue
+    }
+
+    public mutating func enqueue(_ item: T) {
+        tailStack.push(item)
+    }
+
+    public mutating func dequeue() throws -> T {
+        if headStack.isEmpty() {
+            guard !tailStack.isEmpty() else {
+                throw Errors.Empty
+            }
+            moveTailToHead()
+        }
+
+        return try! headStack.pop()
+    }
+
+    public func isEmpty() -> Bool {
+        return headStack.isEmpty() && tailStack.isEmpty()
+    }
+
+    fileprivate mutating func moveTailToHead() {
+        repeat {
+            headStack.push(try! tailStack.pop())
+        } while !tailStack.isEmpty()
+    }
+}
+
+print("\n\n---------- 3.4 Queue via Stacks ----------\n")
+
+var myQ = MyQueue<Int>()
+for i in (0..<3).reversed() {
+    myQ.enqueue(i)
+}
+print("o queue with three elements: " + String(describing: myQ))
+print("o myQ.dequeue() == 2: \(try! myQ.dequeue() == 2)")
+print("o queue with head element removed: " + String(describing: myQ))
+
+for i in (0..<5).reversed() {
+    myQ.enqueue(i * 10 + i / 2)
+}
+
+print("o queue with five new elements (notice 'tailStack'): " + String(describing: myQ))
+
+_ = try! myQ.dequeue()
+_ = try! myQ.dequeue()
+print("o queue with first two elements dequeued: " + String(describing: myQ))
+print("o myQ.dequeue() == 42: \(try! myQ.dequeue() == 42)")
+print("o queue with next element dequeued: " + String(describing: myQ))
+
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
