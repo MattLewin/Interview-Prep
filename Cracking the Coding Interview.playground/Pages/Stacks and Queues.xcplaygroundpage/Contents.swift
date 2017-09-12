@@ -403,5 +403,114 @@ print("o myQ.dequeue() == 42: \(try! myQ.dequeue() == 42)")
 print("o queue with next element dequeued: " + String(describing: myQ))
 
 
+/*: ---
+ ## 3.5 Sort Stack: write a program to sort a stack such that the smallest items are on top. You can use a temporary stack, but no other data structure (i.e., an array). The stack should support `push`, `pop`, `peek`, and `isEmpty`.
+ 
+ * Callout(Plan): When pushing a new value, we need to ensure the new value is placed beneath any lesser values and above any greater
+    values. => popping elements and pushing them onto a temporary stack until we reach a value greater than or equal to our new item.
+ 
+    In addition, to make things more efficient, we only need to "consolidate" the two stacks when we want to `pop` or `peek`.
+ 
+
+ * Callout(Implementation Details for `push`):
+    1. While the sorted stack is not empty, compare new item to `top` of storted stack
+    2. if `item` > than `top`, pop sorted and push to minimums stack, and then continue the loop
+    3. if `item` == `top`, push it onto the sorted stack
+    4. if `item` < `top`, while minimums stack is not empty, compare to `top` of minimums stack
+        1. if `item` >= `top`, push onto sorted stack and exit
+        2. if `item` < `top`, pop minimums stack and push that onto the sorted stack, and then return to (4)
+        3. if minimums stack empty, push `item` onto sorted and exit
+    5. if sorted stack is empty, push `item` onto sorted stack
+ */
+struct SortedStack<T: Comparable> {
+    var sortedStack = Stack<T>()
+    var minsStack = Stack<T>()
+
+    public enum Errors: Error {
+        case Empty // Attempted to peek or pop an empty stack
+    }
+
+    public func isEmpty() -> Bool {
+        return sortedStack.isEmpty() && minsStack.isEmpty()
+    }
+
+    fileprivate mutating func consolidateStacks() {
+        while !minsStack.isEmpty() {
+            sortedStack.push(try! minsStack.pop())
+        }
+    }
+
+    public mutating func peek() throws -> T {
+        consolidateStacks()
+        guard !sortedStack.isEmpty() else {
+            throw Errors.Empty
+        }
+        return try! sortedStack.peek()
+    }
+
+    public mutating func pop() throws -> T {
+        consolidateStacks()
+        guard !sortedStack.isEmpty() else {
+            throw Errors.Empty
+        }
+        return try! sortedStack.pop()
+    }
+
+    public mutating func push(_ item: T) {
+        while !sortedStack.isEmpty() {
+            let sortedTop = try! sortedStack.peek()
+            switch item {
+            case _ where item > sortedTop:
+                minsStack.push(try! sortedStack.pop())
+
+            case _ where item == sortedTop:
+                sortedStack.push(item)
+                return
+
+            case _ where item < sortedTop: // check minsStack
+                while !minsStack.isEmpty() {
+                    let minsTop = try! minsStack.peek()
+                    switch item {
+                    case _ where item >= minsTop:
+                        sortedStack.push(item)
+                        return
+
+                    case _ where item < minsTop:
+                        sortedStack.push(try! minsStack.pop())
+
+                    default: break // we can never get here
+                    }
+                }
+                sortedStack.push(item)
+                return
+
+            default: break // we can never get here
+            }
+        }
+        sortedStack.push(item)
+    }
+}
+
+print("\n\n---------- 3.5 Sorted Stack ----------\n")
+var ss = SortedStack<Character>()
+print("Testing SortedStack using the characters in the string, \"STACK\"")
+print("SortedStack: \(String(describing: ss))")
+for char in "STACK".characters {
+    ss.push(char)
+    print("pushed \(char). SortedStack: \(String(describing: ss))")
+}
+print("Peeking at sorted stack: \(try! ss.peek())")
+print("SortedStack: \(String(describing: ss))")
+
+ss = SortedStack<Character>()
+print("\nTesting SortedStack using the characters in the string, \"ABDCE\"")
+print("SortedStack: \(String(describing: ss))")
+for char in "ABDCE".characters {
+    ss.push(char)
+    print("pushed \(char). SortedStack: \(String(describing: ss))")
+}
+print("Peeking at sorted stack: \(try! ss.peek())")
+print("SortedStack: \(String(describing: ss))")
+
 //: ---
 //: [Previous](@previous)  [Next](@next)
