@@ -149,7 +149,7 @@ public class Queue<T>: CustomStringConvertible {
     private var first: QueueNode<T>?
     private var last: QueueNode<T>?
 
-    public func add(_ item: T) {
+    public func enqueue(_ item: T) {
         let node = QueueNode<T>(data: item)
         if last != nil {
             last!.next = node
@@ -160,7 +160,7 @@ public class Queue<T>: CustomStringConvertible {
         }
     }
 
-    public func remove() throws -> T {
+    public func dequeue() throws -> T {
         guard let head = self.first else {
             throw Errors.NoSuchElement
         }
