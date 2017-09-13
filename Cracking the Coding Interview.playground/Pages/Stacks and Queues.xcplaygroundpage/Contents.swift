@@ -2,6 +2,7 @@
 //: ---
 
 //: # Stacks and Queues
+import Darwin // for arc4random()
 import Foundation
 
 /*: ---
@@ -562,6 +563,176 @@ for char in "ABDCE".characters {
 print("unsorted stackToSort: \(String(describing: stackToSort))")
 sort(&stackToSort)
 print("  sorted stackToSort: \(String(describing: stackToSort))")
+
+
+/*: ---
+ ## 3.6 Animal Shelter: A shelter operates on a FIFO basis, taking in dogs and cats. A human can request the oldest pet, oldest dog,
+    or oldest cat. Implement `dequeueCat`, `dequeueDog`, `dequeueAny`, and `enqueue`. You can use the built-in `LinkedList`. (But,
+    this not being Java, we don't have such a thing.)
+ 
+ * Callout(Initial Thoughts):
+    - two linked lists, one for dogs, one for cats
+    - enclosing data structure keeps a counter of animals taken in
+    - each animal has a "priority" that is the counter when it was brought in
+    - keep head and tail pointers for enqueue and dequeue
+    - `dequeueCat` removes and returns head of that queue, dog the same
+    - `dequeueAny` removes and returns the one with the smallest priority value
+ 
+ */
+struct Animal: CustomStringConvertible {
+    enum Species {
+        case Cat
+        case Dog
+    }
+
+    let name: String
+    let species: Species
+
+    var description: String {
+        return "\(name):\(species)"
+    }
+
+    init(species: Species) {
+        switch species {
+        case .Cat:
+            name = "Felix-\(Int(arc4random()))"
+
+        case .Dog:
+            name = "Phydeaux-\(Int(arc4random()))"
+        }
+        self.species = species
+    }
+}
+
+struct AnimalShelter: CustomStringConvertible {
+    class ListNode: CustomStringConvertible {
+        let animal: Animal
+        let priority: Int
+        var next: ListNode?
+
+        init(animal: Animal, priority: Int) {
+            self.animal = animal
+            self.priority = priority
+        }
+
+        var description: String {
+            let thisAnimal = "\(animal)(\(priority))"
+            guard next != nil else { return thisAnimal }
+            return "\(thisAnimal) " + next!.description
+        }
+    }
+
+    public enum Errors: Error {
+        case NoAnimals
+    }
+
+    var intakeCount = 0
+    var dogs: ListNode?
+    var cats: ListNode?
+    var dogsTail: ListNode?
+    var catsTail: ListNode?
+
+    public mutating func enqueue(_ stray: Animal) {
+        switch stray.species {
+        case .Cat:
+            enqueueCat(stray)
+
+        case .Dog:
+            enqueueDog(stray)
+        }
+    }
+
+    private mutating func enqueueCat(_ stray: Animal) {
+        let newNode = ListNode(animal: stray, priority: intakeCount)
+        intakeCount += 1
+
+        guard catsTail != nil else {
+            catsTail = newNode
+            cats = catsTail
+            return
+        }
+
+        catsTail!.next = newNode
+        catsTail = newNode
+    }
+
+    private mutating func enqueueDog(_ stray: Animal) {
+        let newNode = ListNode(animal: stray, priority: intakeCount)
+        intakeCount += 1
+
+        guard dogsTail != nil else {
+            dogsTail = newNode
+            dogs = dogsTail
+            return
+        }
+
+        dogsTail!.next = newNode
+        dogsTail = newNode
+    }
+
+    public mutating func dequeueAny() throws -> Animal {
+        guard cats != nil, dogs != nil else { throw Errors.NoAnimals }
+
+        if cats == nil {
+            return try! dequeueDog()
+        }
+        else if dogs == nil {
+            return try! dequeueCat()
+        }
+
+        if cats!.priority < dogs!.priority {
+            return try! dequeueCat()
+        }
+        else {
+            return try! dequeueDog()
+        }
+    }
+
+    public mutating func dequeueCat() throws -> Animal {
+        guard let catNode = cats else {
+            throw Errors.NoAnimals
+        }
+
+        cats = catNode.next
+        return catNode.animal
+    }
+
+    public mutating func dequeueDog() throws -> Animal {
+        guard let dogNode = dogs else {
+            throw Errors.NoAnimals
+        }
+
+        dogs = dogNode.next
+        return dogNode.animal
+    }
+
+    var description: String {
+        let dogsDesc = "Dogs: [ \(String(describing: dogs)) ]"
+        let catsDesc = "Cats: [ \(String(describing: cats)) ]"
+        return "\(dogsDesc), \(catsDesc)"
+    }
+}
+
+print("\n\n---------- 3.6 Animal Shelter ----------\n")
+var shelter = AnimalShelter()
+for _ in 0..<5 {
+    switch Int(arc4random_uniform(2)) {
+    case 0:
+        shelter.enqueue(Animal(species: .Dog))
+        shelter.enqueue(Animal(species: .Cat))
+
+    case 1:
+        shelter.enqueue(Animal(species: .Cat))
+        shelter.enqueue(Animal(species: .Dog))
+
+    default: break // will never get here
+    }
+}
+
+print("Shelter Population: \(String(describing: shelter))")
+print("dequeueAny(): \(try! shelter.dequeueAny())")
+print("dequeueCat(): \(try! shelter.dequeueCat())")
+print("dequeueDog(): \(try! shelter.dequeueDog())")
 
 //: ---
 //: [Previous](@previous)  [Next](@next)
