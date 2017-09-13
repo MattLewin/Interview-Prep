@@ -7,7 +7,7 @@ import Foundation
  Helper methods and data structures
  */
 
-public class Node<T: Hashable>: CustomStringConvertible {
+public class Node<T: Hashable> {
     public var next: Node?
     public var value: T
 
@@ -15,9 +15,9 @@ public class Node<T: Hashable>: CustomStringConvertible {
         self.value = value
     }
 
-    public var description: String {
+    public func description() -> String {
         guard next != nil else { return "\(value)" }
-        return "\(value), " + next!.description
+        return "\(value), " + next!.description()
     }
 }
 
