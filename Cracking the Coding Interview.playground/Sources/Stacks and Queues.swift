@@ -6,7 +6,7 @@ import Foundation
  Helper methods and data structures
  */
 
-public struct Stack<Element> {
+public struct Stack<Element>: CustomStringConvertible {
     var items = [Element]()
 
     public init() { }
@@ -33,7 +33,7 @@ public struct Stack<Element> {
         return items.last!
     }
 
-    public func description() -> String {
+    public var description: String {
         guard items.count > 0 else { return "Empty" }
         var first = true
         var output = "["
@@ -130,7 +130,7 @@ public class Stack<T> {
 }
 */
 
-public class Queue<T> {
+public class Queue<T>: CustomStringConvertible {
     fileprivate class QueueNode<T> {
         var data: T
         var next: QueueNode<T>?
@@ -185,7 +185,7 @@ public class Queue<T> {
         return first == nil
     }
 
-    public func description() -> String {
+    public var description: String {
         guard first != nil else {
             return "Empty"
         }

@@ -12,7 +12,7 @@ import Foundation
  
  - Note: Looking at the two solutions provided in the book, it seems that the author meant to imply that the array being used for the three stacks is of fixed size. I did not infer that, so I implemented something dynamic. The gist is the same, except that we would need to check for exceeding the predetermined bounds rather than resizing the array.
  */
-struct TripleStack { // Could be made generic, but I'm using `Int`s for simplicity
+struct TripleStack: CustomStringConvertible { // Could be made generic, but I'm using `Int`s for simplicity
     private var tops = [-3, -2, -1]
     private var s = Array<Int>()
 
@@ -48,7 +48,7 @@ struct TripleStack { // Could be made generic, but I'm using `Int`s for simplici
         return item
     }
 
-    public func description() -> String {
+    public var description: String {
         var output = String()
         for stackNo in 1...3 {
             let stackIndex = stackNo - 1
@@ -88,7 +88,7 @@ for i in 1..<5 {
     triStack.push(item: i * 10 + i, to: 2)
 }
 triStack.push(item: 999, to: 1)
-print(triStack.description())
+print(triStack.description)
 
 try triStack.peek(stackNo: 1)
 try triStack.pop(stackNo: 1)
@@ -122,7 +122,7 @@ do {
     - `push()` should push onto minimum stack if new value is <= top of minimum stack. (Pushing equal so we can pop equal values and still maintain the prior minimum.)
     - `pop()` should pop the minimum stack if existing top.value == minimum
  */
-struct StackWithMin<T: Comparable> {
+struct StackWithMin<T: Comparable>: CustomStringConvertible {
     private var stack = Stack<T>()
     private var minStack = Stack<T>()
 
@@ -163,9 +163,9 @@ struct StackWithMin<T: Comparable> {
         return try minStack.peek()
     }
 
-    public func description() -> String {
-        var output = "        Stack: " + stack.description() + "\n"
-        output    += "Minimum Stack: " + minStack.description() + "\n"
+    public var description: String {
+        var output = "        Stack: " + stack.description + "\n"
+        output    += "Minimum Stack: " + minStack.description + "\n"
 
         return output
     }
@@ -182,7 +182,7 @@ for i in 1..<rangeTop {
 stackWithMin.push(999)
 
 print("\n3.2 Stack with min(): Test 1:")
-print(stackWithMin.description())
+print(stackWithMin.description)
 
 print("\n3.2 Stack with min(): Test 2:")
 print("stackWithMin.min() == 1: \(try! stackWithMin.min() == 1)")
@@ -197,7 +197,7 @@ for _ in 0..<3 {
 try print("stackWithMin.min() == 2: \(stackWithMin.min() == 2)")
 
 print("\n3.3 Stack with min(): Current Stack State:")
-print(stackWithMin.description())
+print(stackWithMin.description)
 
 /*: ---
  ## 3.3 Stack of Plates: Imagine a literal stack of plates. If the stack gets too high, it might topple. Therefore, in real life, we would likely start a new stack when the previous stack exceeds some threshold. Implement a data structure, `SetofStacks` that mimics this. `SetOfStacks` should be composed of several stacks and should create a new stack once the previous one exceeds capacity. `SetOfStacks.push()` and `SetOfStacks.pop()` should behave identically to a single stack. (That is, `pop()` should return the same values as if there were just a single stack.)
@@ -231,7 +231,7 @@ struct SetOfStacks<T> {
             let indent = String(repeating: "  ", count: indentation)
             var output = indent + "[\n"
             output += indent + "  count: \(count)\n"
-            output += indent + "  stack: \(stack.description())\n"
+            output += indent + "  stack: \(stack.description)\n"
             output += indent + "]\n"
             return output
         }
@@ -293,7 +293,7 @@ struct SetOfStacks<T> {
         }
     }
 
-    public func description() -> String {
+    public var description: String {
         var output = "[\n"
         output += "  threshold:\(threshold)\n"
         output += "  currentStack:\(currentStack)\n"
@@ -317,7 +317,7 @@ for i in 0..<5 {
 }
 plates.push(999)
 print("plates:")
-print(plates.description())
+print(plates.description)
 
 print("plates.peek() = \(try! plates.peek())")
 print("plates.isEmpty() = \(plates.isEmpty())")
@@ -325,7 +325,7 @@ print("plates.pop() = \(try! plates.pop())")
 print("plates.popAt(substack: 1) = \(try! plates.popAt(substack: 1))")
 print("plates.pop() = \(try! plates.pop())")
 print("plates:")
-print(plates.description())
+print(plates.description)
 print("popping plates until empty")
 var output = "["
 repeat {
@@ -334,7 +334,7 @@ repeat {
 output += "]"
 print(output)
 print("plates:")
-print(plates.description())
+print(plates.description)
 print("plates.isEmpty() = \(plates.isEmpty())")
 do {
     print("plates.pop() (should fail) = \(try plates.pop())")

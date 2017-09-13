@@ -28,10 +28,10 @@ func removeDups<T: Hashable>(from list: Node<T>) {
 
 var intList = makeIntList(count: 4)
 
-print(intList.description())
+print(intList.description)
 
 removeDups(from: intList)
-print(intList.description())
+print(intList.description)
 
 //: **Follow up:** how would you solve this problem if a temporary buffer is not allowed?
 
@@ -61,17 +61,17 @@ func removeDupsNoBuffer<T: Hashable>(from list: Node<T>) {
 
 intList = makeIntList(count: 6)
 
-print(intList.description())
+print(intList.description)
 removeDupsNoBuffer(from: intList)
-print(intList.description())
+print(intList.description)
 
 let charList = makeCharacterList(count: 15)
-print(charList.description())
+print(charList.description)
 removeDups(from: charList)
-print(charList.description())
+print(charList.description)
 
 let strList = makeListFrom("ABCDEFG")
-print(strList.description())
+print(strList.description)
 
 /*: ---
  ## 2.2 Return Kth to last element: implement an algorithm to find the Kth to last element of a singly-linked list
@@ -118,7 +118,7 @@ func delete<T: Hashable>(_ node: Node<T>) {
 let deleteTestList = makeListFrom("ABCDEF")
 let cNode = deleteTestList.next!.next!
 delete(cNode)
-print(deleteTestList.description())
+print(deleteTestList.description)
 
 /*: ---
  ## 2.4 Partition a linked list around a value `X` such that all values less than `X` come before all values greater than or equal to `X`. Numbers larger than `X` can come before `X`, as long as no smaller numbers come before any number `X` or greater.
@@ -155,22 +155,22 @@ func partition<T: Hashable & Comparable>(_ list: Node<T>, by x: T) {
 }
 
 var partitionList = makeListFrom("ABCDCEFABGHC")
-print("list to partition: \(partitionList.description())")
+print("list to partition: \(partitionList.description)")
 partition(partitionList, by: "C")
-print("partition by 'C' : \(partitionList.description())")
+print("partition by 'C' : \(partitionList.description)")
 
 partitionList = makeListFrom("ABCDCEFABGHC")
 partition(partitionList, by: "E")
-print("partition by 'E' : \(partitionList.description())")
+print("partition by 'E' : \(partitionList.description)")
 
 partitionList = makeListFrom("ABCDCEFABGHC")
 partition(partitionList, by: "B")
-print("partition by 'B' : \(partitionList.description())")
+print("partition by 'B' : \(partitionList.description)")
 
 partitionList = makeListFrom("ABCDCFFABGHC")
-print("list w/o X value : \(partitionList.description())")
+print("list w/o X value : \(partitionList.description)")
 partition(partitionList, by: "E")
-print("partition by 'E' : \(partitionList.description())")
+print("partition by 'E' : \(partitionList.description)")
 
 /*: ---
  ## 2.5 Sum Lists: You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in *reverse* order, such that the 1's digit is at the head of the list. Write a function that adds the two numbers and returns the sum as a linked list.
@@ -222,7 +222,7 @@ func sumReversedLists(_ list1: Node<Int>, _ list2: Node<Int>) -> Node<Int>? {
 var sumList1 = makeReversedListFrom(617)!
 var sumList2 = makeReversedListFrom(295)!
 let sumResult = sumReversedLists(sumList1, sumList2)!
-print("(\(sumList1.description())) + (\(sumList2.description())) = (\(sumResult.description()))")
+print("(\(sumList1.description)) + (\(sumList2.description)) = (\(sumResult.description))")
 
 /*:
  ## FOLLOW UP
@@ -268,11 +268,11 @@ func isPalindrome(_ list: Node<Character>) -> Bool {
 let palindromeTest1 = makeListFrom("aba")
 print("(\(palindromeTest1.description)) is a palindrome: \(isPalindrome(palindromeTest1))")
 let palindromeTest2 = makeListFrom("abba")
-print("(\(palindromeTest2.description())) is a palindrome: \(isPalindrome(palindromeTest2))")
+print("(\(palindromeTest2.description)) is a palindrome: \(isPalindrome(palindromeTest2))")
 let palindromeTest3 = makeListFrom("abca")
-print("(\(palindromeTest3.description())) is a palindrome: \(isPalindrome(palindromeTest3))")
+print("(\(palindromeTest3.description)) is a palindrome: \(isPalindrome(palindromeTest3))")
 let palindromeTest4 = makeListFrom("redrumsirismurder")
-print("(\(palindromeTest4.description())) is a palindrome: \(isPalindrome(palindromeTest4))")
+print("(\(palindromeTest4.description)) is a palindrome: \(isPalindrome(palindromeTest4))")
 
 /*: ---
  ## 2.7 Intersection: Given two singly-linked lists, determine if the two lists intersect. Return the intersecting node.
@@ -312,9 +312,9 @@ let intersectionList2 = makeListFrom("QRS")
 let intersectionList2End = intersectionList2.next?.next
 intersectionList2End?.next = intersectionListC
 
-print("intersectionList: \(intersectionList.description())")
-print("intersectionList2: \(intersectionList2.description())")
-print("intersection(between: intersectionList, and: intersectionList2): \(intersection(between: intersectionList, and: intersectionList2)!.description())")
+print("intersectionList: \(intersectionList.description)")
+print("intersectionList2: \(intersectionList2.description)")
+print("intersection(between: intersectionList, and: intersectionList2): \(intersection(between: intersectionList, and: intersectionList2)!.description)")
 
 /*: ---
  ## 2.8 Loop Detection: given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
