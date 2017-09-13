@@ -633,41 +633,30 @@ struct AnimalShelter: CustomStringConvertible {
     var catsTail: ListNode?
 
     public mutating func enqueue(_ stray: Animal) {
+        let newNode = ListNode(animal: stray, priority: intakeCount)
+        intakeCount += 1
+
         switch stray.species {
         case .Cat:
-            enqueueCat(stray)
+            guard catsTail != nil else {
+                catsTail = newNode
+                cats = catsTail
+                return
+            }
+
+            catsTail!.next = newNode
+            catsTail = newNode
 
         case .Dog:
-            enqueueDog(stray)
-        }
-    }
+            guard dogsTail != nil else {
+                dogsTail = newNode
+                dogs = dogsTail
+                return
+            }
 
-    private mutating func enqueueCat(_ stray: Animal) {
-        let newNode = ListNode(animal: stray, priority: intakeCount)
-        intakeCount += 1
-
-        guard catsTail != nil else {
-            catsTail = newNode
-            cats = catsTail
-            return
-        }
-
-        catsTail!.next = newNode
-        catsTail = newNode
-    }
-
-    private mutating func enqueueDog(_ stray: Animal) {
-        let newNode = ListNode(animal: stray, priority: intakeCount)
-        intakeCount += 1
-
-        guard dogsTail != nil else {
+            dogsTail!.next = newNode
             dogsTail = newNode
-            dogs = dogsTail
-            return
         }
-
-        dogsTail!.next = newNode
-        dogsTail = newNode
     }
 
     public mutating func dequeueAny() throws -> Animal {
