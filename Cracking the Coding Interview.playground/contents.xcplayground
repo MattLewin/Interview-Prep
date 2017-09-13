@@ -7,5 +7,6 @@
         <page name='Arrays and Strings'/>
         <page name='Linked Lists'/>
         <page name='Stacks and Queues'/>
+        <page name='Trees and Graphs'/>
     </pages>
 </playground>

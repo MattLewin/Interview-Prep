@@ -1,7 +1,5 @@
-//: [Previous](@previous)
-
+//: [Previous](@previous)  [Next](@next)
 //: # Small examples from Cracking the Coding Interview
-
 import Foundation
 
 
@@ -154,4 +152,5 @@ func allPermutations(of testString: String) -> [String] {
 let permutations = allPermutations(of: testString)
 print("\(permutations.count) permutations of '\(testString)': \(permutations)")
 
-//: [Next](@next)
+//: ---
+//: [Previous](@previous)  [Next](@next)

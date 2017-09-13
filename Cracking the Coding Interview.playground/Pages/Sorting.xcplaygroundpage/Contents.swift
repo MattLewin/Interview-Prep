@@ -1,5 +1,4 @@
-//: [Previous](@previous)
-
+//: [Previous](@previous)  [Next](@next)
 //: ## Sorting algorithms
 import Foundation
 //: ### Mergesort
@@ -7,4 +6,5 @@ import Foundation
 
 //: ### Quicksort
 
-//: [Next](@next)
+//: ---
+//: [Previous](@previous)  [Next](@next)

@@ -1,5 +1,4 @@
-//: [Previous](@previous)
-//: ---
+//: [Previous](@previous)  [Next](@next)
 //: # Linked Lists
 import Foundation
 

@@ -1,6 +1,4 @@
 //: [Previous](@previous)  [Next](@next)
-//: ---
-
 //: # Stacks and Queues
 import Darwin // for arc4random()
 import Foundation

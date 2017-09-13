@@ -1,6 +1,4 @@
 //: [Previous](@previous)  [Next](@next)
-//: ---
-
 //: # Arrays and Strings
 import Foundation
 
