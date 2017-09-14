@@ -8,15 +8,15 @@ import Foundation
 
 public class BinaryTreeNode<Element>: CustomStringConvertible {
 
-    public var data: Element
+    public var value: Element
     public var left: BinaryTreeNode<Element>?
     public var right: BinaryTreeNode<Element>?
 
     /// An optional function to be executed when "visiting" this node
     public var visit: (() -> Void)?
 
-    init(data: Element) {
-        self.data = data
+    public init(value: Element) {
+        self.value = value
     }
 
     // MARK: CustomStringConvertible
@@ -79,20 +79,21 @@ public class Graph<Element>: CustomStringConvertible {
 
 public class GraphNode<Element>: CustomStringConvertible {
 
-    public var data: Element
+    public var value: Element
     public var adjacent = [GraphNode<Element>]()
 
     public var visit: (() -> Void)?
     public var visited = false
 
-    init(data: Element) {
-        self.data = data
+    public init(value: Element) {
+        self.value = value
     }
 
     // MARK: CustomStringConvertible
 
     public var description: String {
-        return "*** DESCRIPTION NOT YET IMPLEMENTED ***"
+        let elementType = String(describing: Element.self)
+        return "GraphNode<\(elementType)> { value:\(value), adjacent nodes:\(adjacent.count) }"
     }
 }
 
