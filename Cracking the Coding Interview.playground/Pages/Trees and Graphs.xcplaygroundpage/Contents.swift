@@ -89,5 +89,69 @@ print("bfsPathExists(from: graph[2], to: graph[4]): \(bfsPathExists(from: graph[
 graph = createGraph()
 print("dfsPathExists(from: graph[2], to: graph[4]): \(dfsPathExists(from: graph[2], to: graph[4]))")
 
+/*: ---
+ ## 4.2 Minimal Tree: Given a sorted (increasing order) array with unique integer elements, write an algorithm to create a binary search tree with minimal height.
+ 
+ * Callout(Thoughts & Plan):
+    1. BST *does not* need to be complete
+    2. We know element count, so let's divide it in half, and then process each slice
+        1. if element count is odd, middle index is root (the point at which we divide the array)
+        2. if element count is even, we can pick an element to be root. *Let's use the first element of the right-side slice.*
+        3. if element count is 1, return a node with that value
+        4. if element count is 2, return a node with `root = elements[1]` and `root.left = elements[0]`
+        5. if element count is 3, return a node with root, left, and right equal to `elements[1]`, `elements[0]`, and `elements[2]`, respectively
+
+ 
+ * Note: if element count is 0, behavior is undefined
+ */
+func makeBST(from elements: [Int]) -> BinaryTreeNode<Int> {
+    // Note, this function assumes at least one element in `elements`
+    switch elements.count {
+    case 1:
+        return BinaryTreeNode<Int>(value: elements[0])
+
+    case 2:
+        let node = BinaryTreeNode<Int>(value: elements[1])
+        node.left = BinaryTreeNode<Int>(value: elements[0])
+        return node
+
+    case 3:
+        let node = BinaryTreeNode<Int>(value: elements[1])
+        node.left = BinaryTreeNode<Int>(value: elements[0])
+        node.right = BinaryTreeNode<Int>(value: elements[2])
+        return node
+
+    default:
+        let rootIndex = elements.count / 2
+        let node = BinaryTreeNode<Int>(value: elements[rootIndex])
+        node.left = makeBST(from: Array(elements[0..<rootIndex]))
+        node.right = makeBST(from: Array(elements[(rootIndex + 1)..<elements.count]))
+        return node
+    }
+}
+
+print("\n---------- 4.2 Minimal Tree ----------")
+
+var elements = [1, 2, 3, 4]
+let bst = makeBST(from: elements)
+print("Binary Search Tree from \(elements)")
+inOrderTraversal(bst, debug: true)
+
+elements = []
+for i in 1...5 {
+    elements.append(i)
+}
+
+print("\nBinary Search Tree from \(elements)")
+inOrderTraversal(makeBST(from: elements), debug: true)
+
+elements = []
+for i in 1...16 {
+    elements.append(i)
+}
+
+print("\nBinary Search Tree from \(elements)")
+inOrderTraversal(makeBST(from: elements), debug: true)
+
 //: ---
 //: [Previous](@previous)
