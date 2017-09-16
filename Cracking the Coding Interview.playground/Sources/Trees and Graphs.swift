@@ -28,40 +28,86 @@ public class BinaryTreeNode<Element>: CustomStringConvertible {
 
 // MARK: Binary Tree Traversal
 
+var height = 0
+
 /// Perform in-order traversal of `node`. (i.e., left branch, current node, right branch)
 ///
-/// - Parameter node: the node to be traversed
-public func inOrderTraversal<T>(_ node: BinaryTreeNode<T>?) {
+/// - Parameters
+///   - node: the node to be traversed
+///   - debug: whether to print the tree while traversing (defaults to `false`)
+public func inOrderTraversal<T>(_ node: BinaryTreeNode<T>?, debug: Bool = false) {
     guard let root = node else { return }
-    inOrderTraversal(root.left)
+    var indent = ""
+    if debug {
+        height += 1
+        indent = String(repeating: "=", count: height)
+    }
+
+    if debug && root.left != nil { print("\(indent) L(h:\(height))") }
+    inOrderTraversal(root.left, debug: debug)
+
+    if debug { print("\(indent) N(h:\(height)) val: \(root.value)") }
     if let visitor = root.visit {
         visitor()
     }
-    inOrderTraversal(root.right)
+
+    if debug && root.right != nil { print("\(indent) R(h:\(height))") }
+    inOrderTraversal(root.right, debug: debug)
+
+    if debug { height -= 1 }
 }
 
 /// Perform pre-order traversal of `node`. (i.e., current node, left branch, right branch)
 ///
-/// - Parameter node: the node to be traversed
-public func preOrderTraversal<T>(_ node: BinaryTreeNode<T>?) {
+/// - Parameters
+///   - node: the node to be traversed
+///   - debug: whether to print the tree while traversing (defaults to `false`)
+public func preOrderTraversal<T>(_ node: BinaryTreeNode<T>?, debug: Bool = false) {
     guard let root = node else { return }
+    var indent = ""
+    if debug {
+        height += 1
+        indent = String(repeating: "=", count: height)
+    }
+
+    if debug { print("\(indent) N(h:\(height)) val: \(root.value)") }
     if let visitor = root.visit {
         visitor()
     }
-    preOrderTraversal(root.left)
-    preOrderTraversal(root.right)
+    if debug && root.left != nil { print("\(indent) L(h:\(height))") }
+    preOrderTraversal(root.left, debug: debug)
+
+    if debug && root.right != nil { print("\(indent) R(h:\(height))") }
+    preOrderTraversal(root.right, debug: debug)
+
+    if debug { height -= 1 }
 }
 
 /// Perform post-order traversal of `node`. (i.e., left branch, right branch, current node)
 ///
-/// - Parameter node: the node to be traversed
-public func postOrderTraversal<T>(_ node: BinaryTreeNode<T>?) {
+/// - Parameters
+///   - node: the node to be traversed
+///   - debug: whether to print the tree while traversing (defaults to `false`)
+public func postOrderTraversal<T>(_ node: BinaryTreeNode<T>?, debug: Bool = false) {
     guard let root = node else { return }
-    postOrderTraversal(root.left)
-    postOrderTraversal(root.right)
+    var indent = ""
+    if debug {
+        height += 1
+        indent = String(repeating: "=", count: height)
+    }
+
+    if debug && root.left != nil { print("\(indent) L(h:\(height))") }
+    postOrderTraversal(root.left, debug: debug)
+
+    if debug && root.right != nil { print("\(indent) R(h:\(height))") }
+    postOrderTraversal(root.right, debug: debug)
+
+    if debug { print("\(indent) N(h:\(height)) val: \(root.value)") }
     if let visitor = root.visit {
         visitor()
     }
+
+    if debug { height -= 1 }
 }
 
 // MARK: - 
