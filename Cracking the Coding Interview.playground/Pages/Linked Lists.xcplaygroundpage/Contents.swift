@@ -6,7 +6,7 @@ import Foundation
 /*: ---
  ## 2.1 Remove Dups: Write an algorithm to remove duplicate elements from an unsorted linked list
  */
-func removeDups<T: Hashable>(from list: Node<T>) {
+func removeDups<T: Hashable>(from list: ListNode<T>) {
     var uniques = Set<T>()
     var currentNode = list
 
@@ -34,7 +34,7 @@ print(intList.description())
 
 //: **Follow up:** how would you solve this problem if a temporary buffer is not allowed?
 
-func removeDupsNoBuffer<T: Hashable>(from list: Node<T>) {
+func removeDupsNoBuffer<T: Hashable>(from list: ListNode<T>) {
     var currentNode = list
 
     while currentNode.next != nil {
@@ -77,7 +77,7 @@ print(strList.description())
  
  * Callout(Plan): Create two pointers, `seeking` and `trailing`, pointing at the head of the list. Walk `seeking` through the list until it reaches the `K`th element of the list. Walk both `seeking` and `trailing` until `seeking` reaches the end of the list. Return the element `trailing` points at.
  */
-func findElement<T: Hashable>(k: Int, fromEndOf list: Node<T>) -> Node<T>? {
+func findElement<T: Hashable>(k: Int, fromEndOf list: ListNode<T>) -> ListNode<T>? {
     var seeking = list
     var trailing = list
 
@@ -108,7 +108,7 @@ print("element=\(element?.value ?? "0")")
  
  * Callout(Plan): Since we can access our successor but not our predecessor, we replace `value` and `next` in this node with those in our successor.
  */
-func delete<T: Hashable>(_ node: Node<T>) {
+func delete<T: Hashable>(_ node: ListNode<T>) {
     guard let nextNode = node.next else { return }
     node.value = nextNode.value
     node.next = nextNode.next
@@ -126,8 +126,8 @@ print(deleteTestList.description())
  
  - Note: The solution below is unlike the two solutions offered in the book, but it is a legitimate solution that uses O(N) storage and takes O(N) time.
 */
-func partition<T: Hashable & Comparable>(_ list: Node<T>, by x: T) {
-    var seeker: Node<T>? = list
+func partition<T: Hashable & Comparable>(_ list: ListNode<T>, by x: T) {
+    var seeker: ListNode<T>? = list
 
     // find first value >= X in list
     while seeker != nil, seeker!.value < x {
@@ -179,11 +179,11 @@ print("partition by 'E' : \(partitionList.description())")
  
     Output: (2 -> 1 -> 9). That is, 912.
  */
-func sumReversedLists(_ list1: Node<Int>, _ list2: Node<Int>) -> Node<Int>? {
-    var runner1: Node<Int>? = list1
-    var runner2: Node<Int>? = list2
-    var result: Node<Int>?
-    var resultEnd: Node<Int>?
+func sumReversedLists(_ list1: ListNode<Int>, _ list2: ListNode<Int>) -> ListNode<Int>? {
+    var runner1: ListNode<Int>? = list1
+    var runner2: ListNode<Int>? = list2
+    var result: ListNode<Int>?
+    var resultEnd: ListNode<Int>?
     var carryTheOne: Int = 0
 
     while runner1 != nil || runner2 != nil {
@@ -202,17 +202,17 @@ func sumReversedLists(_ list1: Node<Int>, _ list2: Node<Int>) -> Node<Int>? {
         sum %= 10
 
         if result == nil { // first time through
-            result = Node<Int>(value: sum)
+            result = ListNode<Int>(value: sum)
             resultEnd = result
         }
         else {
-            resultEnd!.next = Node<Int>(value: sum)
+            resultEnd!.next = ListNode<Int>(value: sum)
             resultEnd = resultEnd!.next
         }
     }
 
     if carryTheOne == 1 {
-        resultEnd!.next = Node<Int>(value: 1)
+        resultEnd!.next = ListNode<Int>(value: 1)
     }
 
     return result
@@ -239,14 +239,14 @@ print("(\(sumList1.description())) + (\(sumList2.description())) = (\(sumResult.
     1. traverse list, counting nodes and building a new list by prepending erach value we find (this gives us a reversed version of the initial list)
     2. traverse and compare the first `length/2` elements of both lists, returning false if they don't match, true otherwise
  */
-func isPalindrome(_ list: Node<Character>) -> Bool {
-    var reversed: Node<Character>?
-    var runner: Node<Character>? = list
+func isPalindrome(_ list: ListNode<Character>) -> Bool {
+    var reversed: ListNode<Character>?
+    var runner: ListNode<Character>? = list
     var length: Int = 0
 
     // build reversed list and increment length
     while runner != nil {
-        let newNode = Node<Character>(value: runner!.value)
+        let newNode = ListNode<Character>(value: runner!.value)
         newNode.next = reversed
         reversed = newNode
         length += 1
@@ -284,7 +284,7 @@ print("(\(palindromeTest4.description())) is a palindrome: \(isPalindrome(palind
     1. Are `Node`s `Hashable`? Not to my knowledge.
  2. Can we get the address of a `Node`? Maybe. (Yes, see [General Helpers](../../Sources/General%20Helpers.swift).)
  */
-func intersection<T: Hashable>(between list1: Node<T>, and list2: Node<T>) -> Node<T>? {
+func intersection<T: Hashable>(between list1: ListNode<T>, and list2: ListNode<T>) -> ListNode<T>? {
     var nodes = Set<Int>()
     var runner = list1
 
@@ -327,7 +327,7 @@ print("intersection(between: intersectionList, and: intersectionList2): \(inters
  
  * Callout(Plan): Walk the list, storing the address of each node in a `Set`. If the address already exists in the set, we have found our loop node.
  */
-func loopExists<T: Hashable>(in list: Node<T>) -> Node<T>? {
+func loopExists<T: Hashable>(in list: ListNode<T>) -> ListNode<T>? {
     var nodes = Set<Int>()
     var runner = list
     while runner.next != nil {
@@ -351,9 +351,9 @@ loopExists(in: loopingList)?.value
 
 //: While my solution *does* work, the book has another solution that relies upon the `FastRunner / SlowRunner` approach. Here it is...
 
-func loopExists2<T: Hashable>(in list: Node<T>) -> Node<T>? {
-    var slow: Node<T>? = list
-    var fast: Node<T>? = list
+func loopExists2<T: Hashable>(in list: ListNode<T>) -> ListNode<T>? {
+    var slow: ListNode<T>? = list
+    var fast: ListNode<T>? = list
 
     // Find meeting point. This will be `LOOP_SIZE - k` steps into the linked list.
     while fast != nil && fast?.next != nil {
