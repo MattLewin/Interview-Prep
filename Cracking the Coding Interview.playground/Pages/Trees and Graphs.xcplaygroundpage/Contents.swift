@@ -153,5 +153,139 @@ for i in 1...16 {
 print("\nBinary Search Tree from \(elements)")
 inOrderTraversal(makeBST(from: elements), debug: true)
 
+/*: ---
+ ## 4.3 List of Depths: given a binary tree, create an algorithm that creates a linked list of all the nodes at each depth. (i.e., if you have a tree of depth `D`, you will have `D` linked lists.)
+ 
+ * Callout(Thoughts):
+    1. preorder traversal (though I think it doesn't matter), adding each node to the appropriate linked list
+    2. assume we can use an array to store the set of linked lists
+    3. method to traverse takes depth param
+ 
+    - If we cannot use an array, we can omit the depth and include a list to append the nodes to. We would pass in a pointer to *this* level's list. If the next level's list does not exist, create it and append it to the list we were passed prior to processing the child nodes.
+ */
+class LLNode<Element>: CustomStringConvertible {
+    var value: Element
+    var next: LLNode<Element>?
+
+    init(value: Element) {
+        self.value = value
+    }
+
+    var description: String {
+        guard next != nil else { return "\(value)" }
+        return "\(value), " + next!.description
+    }
+}
+
+func arrayListOfDepths<T>(array: inout [LLNode<BinaryTreeNode<T>>?], depth: Int, node: BinaryTreeNode<T>) {
+    let newLLNode = LLNode<BinaryTreeNode<T>>(value: node)
+    if array.count < depth {
+        array.append(newLLNode)
+    }
+    else {
+        newLLNode.next = array[depth-1]
+        array[depth - 1] = newLLNode
+    }
+
+    if node.left != nil {
+        arrayListOfDepths(array: &array, depth: (depth + 1), node: node.left!)
+    }
+
+    if node.right != nil {
+        arrayListOfDepths(array: &array, depth: (depth + 1), node: node.right!)
+    }
+}
+
+typealias ListOfLinkedLists<Element> = LLNode<LLNode<Element>?>
+
+func listListOfDepths<T>(list: ListOfLinkedLists<BinaryTreeNode<T>>, node: BinaryTreeNode<T>) {
+    let newLLNode = LLNode<BinaryTreeNode<T>>(value: node)
+    if list.value == nil {
+        list.value = newLLNode
+    }
+    else {
+        newLLNode.next = list.value
+        list.value = newLLNode
+    }
+
+    guard node.left != nil || node.right != nil else { return }
+
+    if list.next == nil {
+        list.next = ListOfLinkedLists<BinaryTreeNode<T>>(value: nil)
+    }
+
+    if node.left != nil {
+        listListOfDepths(list: list.next!, node: node.left!)
+    }
+
+    if node.right != nil {
+        listListOfDepths(list: list.next!, node: node.right!)
+    }
+}
+
+print("\n---------- 4.3 List of Depths ----------")
+print("** using arrayListOfDepths **")
+
+var bt: BinaryTreeNode<Int>
+var nodesArray: [LLNode<BinaryTreeNode<Int>>?]
+
+elements = [1, 2, 3, 4, 5, 6, 7, 8]
+bt = makeBST(from: elements)
+print("Binary Tree from \(elements)")
+inOrderTraversal(bt, debug: false)
+nodesArray = [LLNode<BinaryTreeNode<Int>>?]()
+arrayListOfDepths(array: &nodesArray, depth: 1, node: bt)
+print("nodesArray: \(nodesArray)")
+print("")
+
+elements = [1]
+bt = makeBST(from: elements)
+print("Binary Tree from \(elements)")
+inOrderTraversal(bt)
+nodesArray = [LLNode<BinaryTreeNode<Int>>?]()
+arrayListOfDepths(array: &nodesArray, depth: 1, node: bt)
+print("nodesArray: \(nodesArray)")
+print("")
+
+elements = Array<Int>(1...64)
+bt = makeBST(from: elements)
+print("Binary Tree from \(elements)")
+inOrderTraversal(bt)
+nodesArray = [LLNode<BinaryTreeNode<Int>>?]()
+arrayListOfDepths(array: &nodesArray, depth: 1, node: bt)
+print("nodesArray: \(nodesArray)")
+print("")
+
+print("** using listListOfDepths **")
+var nodesList: ListOfLinkedLists<BinaryTreeNode<Int>>
+
+elements = [1, 2, 3, 4, 5, 6, 7, 8]
+bt = makeBST(from: elements)
+print("Binary Tree from \(elements)")
+inOrderTraversal(bt, debug: false)
+nodesList = ListOfLinkedLists<BinaryTreeNode<Int>>(value: nil)
+listListOfDepths(list: nodesList, node: bt)
+print("nodesList: \(nodesList)")
+print("")
+
+elements = [1]
+bt = makeBST(from: elements)
+print("Binary Tree from \(elements)")
+inOrderTraversal(bt)
+nodesList = ListOfLinkedLists<BinaryTreeNode<Int>>(value: nil)
+listListOfDepths(list: nodesList, node: bt)
+print("nodesList: \(nodesList)")
+print("")
+
+elements = Array<Int>(1...64)
+bt = makeBST(from: elements)
+print("Binary Tree from \(elements)")
+inOrderTraversal(bt)
+nodesList = ListOfLinkedLists<BinaryTreeNode<Int>>(value: nil)
+listListOfDepths(list: nodesList, node: bt)
+print("nodesList: \(nodesList)")
+print("")
+
+
 //: ---
 //: [Previous](@previous)
