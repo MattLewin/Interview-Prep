@@ -22,7 +22,7 @@ public class BinaryTreeNode<Element>: CustomStringConvertible {
     // MARK: CustomStringConvertible
 
     public var description: String {
-        return "*** DESCRIPTION NOT YET IMPLEMENTED ***"
+        return String(describing: value)
     }
 }
 
