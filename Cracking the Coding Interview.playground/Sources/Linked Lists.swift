@@ -7,11 +7,11 @@ import Foundation
  Helper methods and data structures
  */
 
-public class Node<T: Hashable> {
+public class Node<Element> {
     public var next: Node?
-    public var value: T
+    public var value: Element
 
-    public init(value: T) {
+    public init(value: Element) {
         self.value = value
     }
 
@@ -21,7 +21,7 @@ public class Node<T: Hashable> {
     }
 }
 
-public func end<T: Hashable>(of list: Node<T>) -> Node<T> {
+public func end<T>(of list: Node<T>) -> Node<T> {
     var runner = list
     while runner.next != nil { runner = runner.next! }
     return runner
