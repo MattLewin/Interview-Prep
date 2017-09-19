@@ -416,5 +416,149 @@ invalid2_4_4[5].left = invalid2_4_4[6]  // F -> G
 result_4_4 = isBalanced(invalid2_4_4[0])
 print("isBalanced(invalid2_4_4[0]): \(result_4_4) [" + ((result_4_4==false) ? "correct" : "incorrect") + "]")
 
+
+/*: ---
+ ## 4.5 Validate Binary Search Tree: implement a function to check whether a binary tree is a binary *search* tree.
+
+ * Callout(Thoughts):
+ 1. Definition of BST: a binary tree where the value of each node in the left subtree is <= the root value, and the value of every node in the right subtree is > the root value.
+ 2. Find max value in left subtree and ensure it is <= root value
+ 3. Find min value in right subtree and ensure it is > root value
+ 4. If (2) or (3) is false, this is not a binary search tree
+ */
+func isBST<T: Comparable>(_ root: BinaryTreeNode<T>) -> Bool {
+    if root.left != nil {
+        guard compare(subtree: root.left!, to: root.value, using: { lhs, rhs in return lhs <= rhs }) else {
+            return false
+        }
+    }
+
+    if root.right != nil {
+        // Note below that we use '>' since any `T` conforming to `Comparable` implements '>'. (I didn't do it above because I wanted
+        // to try using a closure.)
+        guard compare(subtree: root.right!, to: root.value, using: >) else {
+            return false
+        }
+    }
+
+    return true
+}
+
+func compare<T: Comparable>(subtree root: BinaryTreeNode<T>, to value: T, using: (T, T) -> Bool) -> Bool {
+    guard using(root.value, value) == true else { return false }
+    if root.left != nil {
+        guard compare(subtree: root.left!, to: value, using: using) == true else { return false }
+    }
+
+    if root.right != nil {
+        guard compare(subtree: root.right!, to: value, using: using) == true else { return false }
+    }
+
+    return true
+}
+
+print("\n---------- 4.5 Validate Binary Search Tree ----------")
+var result_4_5: Bool
+
+/*:
+ valid binary tree #1
+ ```
+        C
+       / \
+      /   \
+     B     D
+    /       \
+   /         \
+  A           E
+ ```
+ */
+let valid1_4_5 = createNodes(from: "ABCDE")
+let valid1_4_5_root = valid1_4_5[2] // C
+valid1_4_5[2].left = valid1_4_5[1]  // C -> B
+valid1_4_5[2].right = valid1_4_5[3] // C -> D
+valid1_4_5[1].left = valid1_4_5[0]  // B -> A
+valid1_4_5[3].right = valid1_4_5[4] // D -> E
+
+result_4_5 = isBST(valid1_4_5_root)
+print("isBST(valid1_4_5_root): \(result_4_5) [" + ((result_4_5==true) ? "correct" : "incorrect") + "]")
+
+/*:
+ valid binary tree #2
+ ````
+            D
+           / \
+          /   \
+         C     E
+        / \   /
+       /  |   |
+      B   D'  F
+     /
+    /
+   A
+ ````
+ */
+
+let valid2_4_5 = createNodes(from: "ABCDEFD")
+let valid2_4_5_root = valid2_4_5[3] // D
+valid2_4_5[3].left = valid2_4_5[2]  // D -> C
+valid2_4_5[3].right = valid2_4_5[4] // D -> E
+valid2_4_5[2].left = valid2_4_5[1]  // C -> B
+valid2_4_5[2].right = valid2_4_5[6] // C -> D'
+valid2_4_5[1].left = valid2_4_5[0]  // B -> A
+valid2_4_5[4].left = valid2_4_5[5]  // E -> F
+
+result_4_5 = isBST(valid2_4_5_root)
+print("isBST(valid2_4_5_root): \(result_4_5) [" + ((result_4_5==true) ? "correct" : "incorrect") + "]")
+
+/*:
+ **IN**valid binary tree #1
+ ```
+        D
+       / \
+      /   \
+     B     C
+    /
+   /
+  A
+ ```
+ */
+let invalid1_4_5 = createNodes(from: "ABCD")
+let invalid1_4_5_root = invalid1_4_5[3] // D
+invalid1_4_5[3].left = invalid1_4_5[1]  // D -> B
+invalid1_4_5[3].right = invalid1_4_5[2] // D -> C
+invalid1_4_5[1].left = invalid1_4_5[0]  // B -> A
+
+result_4_5 = isBST(invalid1_4_5_root)
+print("isBST(invalid1_4_5_root): \(result_4_5) [" + ((result_4_5==false) ? "correct" : "incorrect") + "]")
+
+/*:
+ **IN**valid binary tree #2
+ ````
+            D
+           / \
+          /   \
+         C     E
+        / \     \
+       /   \     \
+      A     B     F
+             \
+              \
+               G
+ ````
+ */
+
+let invalid2_4_5 = createNodes(from: "ABCDEFG")
+let invalid2_4_5_root = invalid2_4_5[3] // D
+invalid2_4_5[3].left = invalid2_4_5[2]  // D -> C
+invalid2_4_5[3].right = invalid2_4_5[4] // D -> E
+invalid2_4_5[2].left = invalid2_4_5[0]  // C -> A
+invalid2_4_5[2].right = invalid2_4_5[1] // C -> B
+invalid2_4_5[1].right = invalid2_4_5[6] // B -> G
+invalid2_4_5[4].right = invalid2_4_5[5] // E -> F
+
+result_4_5 = isBST(invalid2_4_5_root)
+print("isBST(invalid2_4_5_root): \(result_4_5) [" + ((result_4_5==false) ? "correct" : "incorrect") + "]")
+
+
 //: ---
 //: [Previous](@previous)
