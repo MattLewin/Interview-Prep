@@ -321,7 +321,7 @@ func createNodes(from string: String) -> [BinaryTreeNode<Character>] {
 }
 
 print("\n---------- 4.4 Check Balanced ----------")
-var result: Bool
+var result_4_4: Bool
 
 /*:
  ```
@@ -334,13 +334,13 @@ var result: Bool
         D
  ```
  */
-let valid1 = createNodes(from: "ABCD")
-valid1[0].left = valid1[1]  // A -> B
-valid1[0].right = valid1[2] // A -> C
-valid1[1].right = valid1[3] // B -> D
+let valid1_4_4 = createNodes(from: "ABCD")
+valid1_4_4[0].left = valid1_4_4[1]  // A -> B
+valid1_4_4[0].right = valid1_4_4[2] // A -> C
+valid1_4_4[1].right = valid1_4_4[3] // B -> D
 
-result = isBalanced(valid1[0])
-print("isBalanced(valid1[0]): \(result) [" + ((result==true) ? "correct" : "incorrect") + "]")
+result_4_4 = isBalanced(valid1_4_4[0])
+print("isBalanced(valid1_4_4[0]): \(result_4_4) [" + ((result_4_4==true) ? "correct" : "incorrect") + "]")
 
 /*:
  ```
@@ -357,16 +357,16 @@ print("isBalanced(valid1[0]): \(result) [" + ((result==true) ? "correct" : "inco
  ```
  */
 
-let valid2 = createNodes(from: "ABCDEFG")
-valid2[0].left = valid2[1]  // A -> B
-valid2[0].right = valid2[2] // A -> C
-valid2[1].left = valid2[3]  // B -> D
-valid2[1].right = valid2[4] // B -> E
-valid2[2].right = valid2[5] // C -> F
-valid2[4].right = valid2[6] // E -> G
+let valid2_4_4 = createNodes(from: "ABCDEFG")
+valid2_4_4[0].left = valid2_4_4[1]  // A -> B
+valid2_4_4[0].right = valid2_4_4[2] // A -> C
+valid2_4_4[1].left = valid2_4_4[3]  // B -> D
+valid2_4_4[1].right = valid2_4_4[4] // B -> E
+valid2_4_4[2].right = valid2_4_4[5] // C -> F
+valid2_4_4[4].right = valid2_4_4[6] // E -> G
 
-result = isBalanced(valid2[0])
-print("isBalanced(valid2[0]): \(result) [" + ((result==true) ? "correct" : "incorrect") + "]")
+result_4_4 = isBalanced(valid2_4_4[0])
+print("isBalanced(valid2_4_4[0]): \(result_4_4) [" + ((result_4_4==true) ? "correct" : "incorrect") + "]")
 
 /*:
  ```
@@ -380,12 +380,12 @@ print("isBalanced(valid2[0]): \(result) [" + ((result==true) ? "correct" : "inco
  ```
  */
 
-let invalid1 = createNodes(from: "ABC")
-invalid1[0].left = invalid1[1]  // A -> B
-invalid1[1].left = invalid1[2]  // C -> C
+let invalid1_4_4 = createNodes(from: "ABC")
+invalid1_4_4[0].left = invalid1_4_4[1]  // A -> B
+invalid1_4_4[1].left = invalid1_4_4[2]  // C -> C
 
-result = isBalanced(invalid1[0])
-print("isBalanced(invalid1[0]): \(result) [" + ((result==false) ? "correct" : "incorrect") + "]")
+result_4_4 = isBalanced(invalid1_4_4[0])
+print("isBalanced(invalid1_4_4[0]): \(result_4_4) [" + ((result_4_4==false) ? "correct" : "incorrect") + "]")
 
 /*:
  ```
@@ -405,17 +405,16 @@ print("isBalanced(invalid1[0]): \(result) [" + ((result==false) ? "correct" : "i
  ```
  */
 
-let invalid2 = createNodes(from: "ABCDEFG")
-invalid2[0].left = invalid2[1]  // A -> B
-invalid2[0].right = invalid2[2] // A -> C
-invalid2[1].right = invalid2[3] // B -> D
-invalid2[2].right = invalid2[4] // C -> E
-invalid2[3].left = invalid2[5]  // D -> F
-invalid2[5].left = invalid2[6]  // F -> G
+let invalid2_4_4 = createNodes(from: "ABCDEFG")
+invalid2_4_4[0].left = invalid2_4_4[1]  // A -> B
+invalid2_4_4[0].right = invalid2_4_4[2] // A -> C
+invalid2_4_4[1].right = invalid2_4_4[3] // B -> D
+invalid2_4_4[2].right = invalid2_4_4[4] // C -> E
+invalid2_4_4[3].left = invalid2_4_4[5]  // D -> F
+invalid2_4_4[5].left = invalid2_4_4[6]  // F -> G
 
-result = isBalanced(invalid2[0])
-print("isBalanced(invalid2[0]): \(result) [" + ((result==false) ? "correct" : "incorrect") + "]")
-
+result_4_4 = isBalanced(invalid2_4_4[0])
+print("isBalanced(invalid2_4_4[0]): \(result_4_4) [" + ((result_4_4==false) ? "correct" : "incorrect") + "]")
 
 //: ---
 //: [Previous](@previous)
