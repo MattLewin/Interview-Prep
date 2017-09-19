@@ -286,6 +286,136 @@ listListOfDepths(list: nodesList, node: bt)
 print("nodesList: \(nodesList)")
 print("")
 
+/*: ---
+ ## 4.4 Check Balanced: Implement a function to check if a binary tree is balanced. For the purposes of this question, a balanced tree is defined as a tree such that the heights of the two subtrees of any node never differ by more than one.
+ 
+ * Callout(Thoughts):
+    1. Given a node, we need to determine the height of each subtree. --> we don't technically need the height, just need to determine whether heights differ by more than 1. Can we use this distinction?
+    2. If we do want to determine height of each subtree, how would we do this and "communicate" it to the parent node?
+    3. Function to determine height of tree returning that height. Call with left and right subtrees, and compare. Return whichever height is greater, as long as the difrerence isn't more than 1, otherwise...*what?*
+        1. could return a tuple of (height, `true`/`false`) or even an `enum` with those two types
+        2. Could just return height and let the enclosing function deal. **<-- let's do this**
+ */
+func isBalanced<T>(_ root: BinaryTreeNode<T>) -> Bool {
+    let leftH = heightOf(root.left)
+    let rightH = heightOf(root.right)
+
+    return (abs(leftH - rightH) > 1) ? false : true
+}
+
+func heightOf<T>(_ root: BinaryTreeNode<T>?) -> Int {
+    guard let node = root else { return 0 }
+    let leftH = heightOf(node.left)
+    let rightH = heightOf(node.right)
+    let greaterHeight = (leftH > rightH) ? leftH : rightH
+    return 1 + greaterHeight
+}
+
+func createNodes(from string: String) -> [BinaryTreeNode<Character>] {
+    var retval = [BinaryTreeNode<Character>]()
+    for char in string.characters {
+        retval.append(BinaryTreeNode<Character>(value: char))
+    }
+
+    return retval
+}
+
+print("\n---------- 4.4 Check Balanced ----------")
+var result: Bool
+
+/*:
+ ```
+        A
+       / \
+      /   \
+     B     C
+      \
+       \
+        D
+ ```
+ */
+let valid1 = createNodes(from: "ABCD")
+valid1[0].left = valid1[1]  // A -> B
+valid1[0].right = valid1[2] // A -> C
+valid1[1].right = valid1[3] // B -> D
+
+result = isBalanced(valid1[0])
+print("isBalanced(valid1[0]): \(result) [" + ((result==true) ? "correct" : "incorrect") + "]")
+
+/*:
+ ```
+        A
+       / \
+      /   \
+     B     C
+    / \     \
+   /   \     \
+  D     E     F
+         \
+          \
+           G
+ ```
+ */
+
+let valid2 = createNodes(from: "ABCDEFG")
+valid2[0].left = valid2[1]  // A -> B
+valid2[0].right = valid2[2] // A -> C
+valid2[1].left = valid2[3]  // B -> D
+valid2[1].right = valid2[4] // B -> E
+valid2[2].right = valid2[5] // C -> F
+valid2[4].right = valid2[6] // E -> G
+
+result = isBalanced(valid2[0])
+print("isBalanced(valid2[0]): \(result) [" + ((result==true) ? "correct" : "incorrect") + "]")
+
+/*:
+ ```
+        A
+       /
+      /
+     B
+    /
+   /
+  C
+ ```
+ */
+
+let invalid1 = createNodes(from: "ABC")
+invalid1[0].left = invalid1[1]  // A -> B
+invalid1[1].left = invalid1[2]  // C -> C
+
+result = isBalanced(invalid1[0])
+print("isBalanced(invalid1[0]): \(result) [" + ((result==false) ? "correct" : "incorrect") + "]")
+
+/*:
+ ```
+        A
+       / \
+      /   \
+     B     C
+      \     \
+       \     \
+        D     E
+       /
+      /
+     F
+    /
+   /
+  G
+ ```
+ */
+
+let invalid2 = createNodes(from: "ABCDEFG")
+invalid2[0].left = invalid2[1]  // A -> B
+invalid2[0].right = invalid2[2] // A -> C
+invalid2[1].right = invalid2[3] // B -> D
+invalid2[2].right = invalid2[4] // C -> E
+invalid2[3].left = invalid2[5]  // D -> F
+invalid2[5].left = invalid2[6]  // F -> G
+
+result = isBalanced(invalid2[0])
+print("isBalanced(invalid2[0]): \(result) [" + ((result==false) ? "correct" : "incorrect") + "]")
+
 
 //: ---
 //: [Previous](@previous)
