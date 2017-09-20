@@ -11,6 +11,7 @@ public class BinaryTreeNode<Element>: CustomStringConvertible {
     public var value: Element
     public var left: BinaryTreeNode<Element>?
     public var right: BinaryTreeNode<Element>?
+    public var parent: BinaryTreeNode<Element>?
 
     /// An optional function to be executed when "visiting" this node
     public var visit: (() -> Void)?
