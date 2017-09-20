@@ -99,7 +99,7 @@ for a in 1...n {
 
 print("###################")
 
-for (result, list) in cdValueMap {
+for (_, list) in cdValueMap {
     for (a, b) in list {
         for (c, d) in list {
             print("\(a)^3 + \(b)^3 = \(c)^3 + \(d)^3")
