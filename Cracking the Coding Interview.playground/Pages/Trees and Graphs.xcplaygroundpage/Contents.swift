@@ -559,6 +559,191 @@ invalid2_4_5[4].right = invalid2_4_5[5] // E -> F
 result_4_5 = isBST(invalid2_4_5_root)
 print("isBST(invalid2_4_5_root): \(result_4_5) [" + ((result_4_5==false) ? "correct" : "incorrect") + "]")
 
+/*: ---
+ ## 4.6 Successor: Write an algorithm to find the "next" node (i.e., in-order successor) of a given node in a binary search tree. You may assume that each node has a link to its parent.
+
+ * Callout(Thoughts):
+     1. in-order is left child, node, right child
+     2. if node has right child, leftmost leaf of that child is successor, else
+     3. if node has no parent, it has no successor, else
+     4. if node is left child of parent, parent is successor, else
+     5. node is right child of parent => successor is parent of the first ancestor that is a left child (i.e., climb tree until current node == currentNode.parent.left), else
+     6. no successor exists
+*/
+func successor<T: Comparable>(to node: BinaryTreeNode<T>) -> BinaryTreeNode<T>? {
+    if node.right != nil {
+        return minNode(node.right!)
+    }
+
+    guard let parent = node.parent else { return nil } // no right child, no parent == root node w/o successor
+
+    if parent.left != nil && parent.left! === node {
+        return parent
+    }
+
+    var currentNode: BinaryTreeNode<T>? = parent
+    while currentNode != nil {
+        guard let cnParent = currentNode?.parent else {
+            // reached root of BST w/o finding a left child node
+            return nil
+        }
+        guard let parentLeft = cnParent.left else {
+            currentNode = cnParent
+            continue
+        }
+        if parentLeft.value == currentNode!.value {
+            // Notice we are comparing value, not objects above. This allows for a <= relationship between parent and left child
+            return cnParent
+        }
+
+        currentNode = cnParent
+    }
+
+    return nil
+}
+
+func minNode<T>(_ root: BinaryTreeNode<T>) -> BinaryTreeNode<T> {
+    var currentNode = root
+    while currentNode.left != nil {
+        currentNode = currentNode.left!
+    }
+    return currentNode
+}
+
+print("\n---------- 4.6 Successor ----------")
+var result_4_6: BinaryTreeNode<Character>?
+
+/*:
+ binary search tree #1
+ ```
+        C
+       / \
+      /   \
+     B     E
+    /     / \
+   /     /   \
+  A     D     F
+ ```
+ */
+let bst1_4_6_pict = """
+binary search tree #1
+        C
+       / \\
+      /   \\
+     B     E
+    /     / \\
+   /     /   \\
+  A     D     F
+
+"""
+let bst1_4_6 = createNodes(from: "ABCDEF")
+bst1_4_6[2].left = bst1_4_6[1]   // C -> B
+bst1_4_6[2].right = bst1_4_6[4]  // C -> E
+bst1_4_6[1].left = bst1_4_6[0]   // B -> A
+bst1_4_6[4].left = bst1_4_6[3]   // E -> D
+bst1_4_6[4].right = bst1_4_6[5]  // E -> F
+
+bst1_4_6[1].parent = bst1_4_6[2] // C <- B
+bst1_4_6[4].parent = bst1_4_6[2] // C <- E
+bst1_4_6[0].parent = bst1_4_6[1] // B <- A
+bst1_4_6[3].parent = bst1_4_6[4] // E <- D
+bst1_4_6[5].parent = bst1_4_6[4] // E <- F
+
+print(bst1_4_6_pict)
+result_4_6 = successor(to: bst1_4_6[0]) // test A
+print("successor(to: A): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=="B") ? "correct" : "incorrect") + "]")
+
+result_4_6 = successor(to: bst1_4_6[2]) // test C
+print("successor(to: C): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=="D") ? "correct" : "incorrect") + "]")
+
+result_4_6 = successor(to: bst1_4_6[5]) // test F
+print("successor(to: F): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value==nil) ? "correct" : "incorrect") + "]")
+
+/*:
+ binary search tree #2
+ ```
+                G
+               / \
+              /   \
+             /     \
+            E       K
+           / \     / \
+          /   \   /   \
+         /    |   |    \
+        B     F   I     M
+       / \       / \   / \
+      /   \     /   |  |  \
+     A     C   H    J  L   N
+            \
+             D
+ */
+let bst2_4_6_pict = """
+      binary search tree #2
+                G
+               / \\
+              /   \\
+             /     \\
+            E       K
+           / \\     / \\
+          /   \\   /   \\
+         /    |   |    \\
+        B     F   I     M
+       / \\       / \\   / \\
+      /   \\     /   |  |  \\
+     A     C   H    J  L   N
+            \\
+             D
+
+"""
+let A = BinaryTreeNode<Character>(value: "A")
+let B = BinaryTreeNode<Character>(value: "B")
+let C = BinaryTreeNode<Character>(value: "C")
+let D = BinaryTreeNode<Character>(value: "D")
+let E = BinaryTreeNode<Character>(value: "E")
+let F = BinaryTreeNode<Character>(value: "F")
+let G = BinaryTreeNode<Character>(value: "G")
+let H = BinaryTreeNode<Character>(value: "H")
+let I = BinaryTreeNode<Character>(value: "I")
+let J = BinaryTreeNode<Character>(value: "J")
+let K = BinaryTreeNode<Character>(value: "K")
+let L = BinaryTreeNode<Character>(value: "L")
+let M = BinaryTreeNode<Character>(value: "M")
+let N = BinaryTreeNode<Character>(value: "N")
+
+A.parent = B
+B.parent = E; B.left = A; B.right = C
+C.parent = B; C.right = D
+D.parent = C
+E.parent = G; E.left = B; E.right = F
+F.parent = E
+G.left = E; G.right = K
+H.parent = I
+I.parent = K; I.left = H; I.right = J
+J.parent = I;
+K.parent = G; K.left = I; K.right = M
+L.parent = M;
+M.parent = K; M.left = L; M.right = N
+N.parent = M;
+
+print("")
+print(bst2_4_6_pict)
+result_4_6 = successor(to: A)
+print("successor(to: A): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=="B") ? "correct" : "incorrect") + "]")
+
+result_4_6 = successor(to: C)
+print("successor(to: C): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=="D") ? "correct" : "incorrect") + "]")
+
+result_4_6 = successor(to: D)
+print("successor(to: D): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=="E") ? "correct" : "incorrect") + "]")
+
+result_4_6 = successor(to: G)
+print("successor(to: G): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=="H") ? "correct" : "incorrect") + "]")
+
+result_4_6 = successor(to: J)
+print("successor(to: J): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=="K") ? "correct" : "incorrect") + "]")
+
+result_4_6 = successor(to: N)
+print("successor(to: N): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value==nil) ? "correct" : "incorrect") + "]")
 
 //: ---
 //: [Previous](@previous)
