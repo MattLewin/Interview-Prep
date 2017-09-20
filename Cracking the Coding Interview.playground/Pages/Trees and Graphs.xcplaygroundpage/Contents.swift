@@ -421,37 +421,30 @@ print("isBalanced(invalid2_4_4[0]): \(result_4_4) [" + ((result_4_4==false) ? "c
  ## 4.5 Validate Binary Search Tree: implement a function to check whether a binary tree is a binary *search* tree.
 
  * Callout(Thoughts):
- 1. Definition of BST: a binary tree where the value of each node in the left subtree is <= the root value, and the value of every node in the right subtree is > the root value.
- 2. Find max value in left subtree and ensure it is <= root value
- 3. Find min value in right subtree and ensure it is > root value
- 4. If (2) or (3) is false, this is not a binary search tree
+ 1. Definition of BST: a binary tree where the value of each node in the left subtree is <= the node value, and the value of every node in the right subtree is > the node value.
+ 2. At root of tree, `max` and `min` are undefined
+ 3. When we traverse left, we pass along `min`, and we update `max` with the value of the node we are leaving
+ 4. When we traverse right, we pass along `max`, and we update `min` with the value of the node we are leaving
+ 5. If `node`'s value is `<= min`, this is *not* a binary search tree
+ 6. If `node`'s value is `> max`, this is *not* a binary search tree
+ 7. If we run out of nodes and haven't tripped over over (5) or (6), this is a binary search tree
  */
-func isBST<T: Comparable>(_ root: BinaryTreeNode<T>) -> Bool {
-    if root.left != nil {
-        guard compare(subtree: root.left!, to: root.value, using: { lhs, rhs in return lhs <= rhs }) else {
-            return false
-        }
+func isBST<T: Comparable>(_ node: BinaryTreeNode<T>, min: T? = nil, max: T? = nil) -> Bool {
+    let value = node.value
+    if min != nil && value <= min! {
+        return false
     }
 
-    if root.right != nil {
-        // Note below that we use '>' since any `T` conforming to `Comparable` implements '>'. (I didn't do it above because I wanted
-        // to try using a closure.)
-        guard compare(subtree: root.right!, to: root.value, using: >) else {
-            return false
-        }
+    if max != nil && value > max! {
+        return false
     }
 
-    return true
-}
-
-func compare<T: Comparable>(subtree root: BinaryTreeNode<T>, to value: T, using: (T, T) -> Bool) -> Bool {
-    guard using(root.value, value) == true else { return false }
-    if root.left != nil {
-        guard compare(subtree: root.left!, to: value, using: using) == true else { return false }
+    if node.left != nil && !isBST(node.left!, min: min, max: value) {
+        return false
     }
 
-    if root.right != nil {
-        guard compare(subtree: root.right!, to: value, using: using) == true else { return false }
+    if node.right != nil && !isBST(node.right!, min: value, max: max) {
+        return false
     }
 
     return true
@@ -489,9 +482,9 @@ print("isBST(valid1_4_5_root): \(result_4_5) [" + ((result_4_5==true) ? "correct
            / \
           /   \
          C     E
-        / \   /
-       /  |   |
-      B   D'  F
+        / \     \
+       /   \     \
+      B     D'    F
      /
     /
    A
@@ -505,7 +498,7 @@ valid2_4_5[3].right = valid2_4_5[4] // D -> E
 valid2_4_5[2].left = valid2_4_5[1]  // C -> B
 valid2_4_5[2].right = valid2_4_5[6] // C -> D'
 valid2_4_5[1].left = valid2_4_5[0]  // B -> A
-valid2_4_5[4].left = valid2_4_5[5]  // E -> F
+valid2_4_5[4].right = valid2_4_5[5] // E -> F
 
 result_4_5 = isBST(valid2_4_5_root)
 print("isBST(valid2_4_5_root): \(result_4_5) [" + ((result_4_5==true) ? "correct" : "incorrect") + "]")
@@ -558,6 +551,28 @@ invalid2_4_5[4].right = invalid2_4_5[5] // E -> F
 
 result_4_5 = isBST(invalid2_4_5_root)
 print("isBST(invalid2_4_5_root): \(result_4_5) [" + ((result_4_5==false) ? "correct" : "incorrect") + "]")
+
+/*:
+ **IN**valid binary tree #3
+ ````
+        D
+       / \
+      B   E
+     /
+    A
+     \
+      C
+ ````
+ */
+let invalid3_4_5 = createNodes(from: "ABCDE")
+let invalid3_4_5_root = invalid3_4_5[3] // D
+invalid3_4_5[3].left = invalid3_4_5[1]  // D -> B
+invalid3_4_5[3].right = invalid3_4_5[4] // D -> E
+invalid3_4_5[1].left = invalid3_4_5[0]  // B -> A
+invalid3_4_5[0].right = invalid3_4_5[2] // A -> C
+
+result_4_5 = isBST(invalid3_4_5_root)
+print("isBST(invalid3_4_5_root): \(result_4_5) [" + ((result_4_5==false) ? "correct" : "incorrect") + "]")
 
 /*: ---
  ## 4.6 Successor: Write an algorithm to find the "next" node (i.e., in-order successor) of a given node in a binary search tree. You may assume that each node has a link to its parent.
