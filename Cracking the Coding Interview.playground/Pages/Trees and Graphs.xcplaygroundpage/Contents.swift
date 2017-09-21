@@ -760,5 +760,105 @@ print("successor(to: J): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=
 result_4_6 = successor(to: N)
 print("successor(to: N): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value==nil) ? "correct" : "incorrect") + "]")
 
+/*: ---
+ ## 4.7 Build Order: You are given a list of projects and a list of dependencies, which is a list of pairs of projects, where the second project depends on the first project. All of a project's dependencies msut be built before the project is built. Find a build order that will allow the projects to be built, or return an error if there is no valid build order.
+
+ ````
+ Input:
+     projects: a, b, c, d, e, f
+     dependencies: (a,d), (f,b), (b,d), (f,a), (d,c)
+
+ Output: f, e, a, b, d, c
+ ````
+
+ * Callout(Thoughts):
+     1. projects are each a vertex, and dependencies are each a directed edge
+     2. we have to determine whether there is a path from any one vertext to all the others
+
+ - Callout(More Considered Thoughts):
+     1. build the graph of each vertex with the edges from the project to the dependency, counting the number of "depending" projects
+     2. traverse all projects with 0 "depending" projects (i.e., no incoming edges), marking each vertex as visited and pushing it on a stack
+     3. confirm all vertexes/projects visited. If so, the stack is the build order
+ */
+struct ProjectGraph: CustomStringConvertible {
+    class Project: CustomStringConvertible {
+        let value: Character
+        var visited = false
+        var dependencies = [Project]()
+        var dependingProjects = 0
+
+        init(value: Character) {
+            self.value = value
+        }
+
+        var description: String {
+            return "[value: \(value), dependingProjects: \(dependingProjects), dependencies:\(dependencies.count)]"
+        }
+    }
+
+    var projects = [Project]()
+
+    func buildOrder() -> [Character]? {
+        var orderStack = [Character]()
+        var toVisit = [Project]()
+
+        toVisit.append(contentsOf: projects.filter({ $0.dependingProjects == 0 }))
+
+        while !toVisit.isEmpty {
+            let project = toVisit.removeFirst()
+            guard !project.visited else { continue }
+            orderStack.append(project.value)
+            toVisit.append(contentsOf: project.dependencies)
+            project.visited = true
+        }
+
+        // If any of the projects have not been visited, there is no valid build order
+        guard projects.filter({ $0.visited == false }).isEmpty else { return nil }
+
+        return orderStack.reversed()
+    }
+
+    var description: String {
+        return String(describing: projects)
+    }
+}
+
+func buildProjectGraph(_ num: Int) -> ProjectGraph? {
+    switch num {
+    case 1:
+        let projects = [
+            ProjectGraph.Project(value: "A"),
+            ProjectGraph.Project(value: "B"),
+            ProjectGraph.Project(value: "C"),
+            ProjectGraph.Project(value: "D"),
+            ProjectGraph.Project(value: "E"),
+            ProjectGraph.Project(value: "F"),
+            ]
+        projects[3].dependencies.append(projects[0]) // D depends on A
+        projects[0].dependingProjects += 1
+        projects[1].dependencies.append(projects[5]) // B depends on F
+        projects[5].dependingProjects += 1
+        projects[3].dependencies.append(projects[1]) // D depends on B
+        projects[1].dependingProjects += 1
+        projects[0].dependencies.append(projects[5]) // A depends on F
+        projects[5].dependingProjects += 1
+        projects[2].dependencies.append(projects[3]) // C depends on D
+        projects[3].dependingProjects += 1
+
+        var graph = ProjectGraph()
+        graph.projects = projects
+        return graph
+
+    default:
+        return nil
+
+    }
+}
+
+print("\n---------- 4.7 Build Order ----------")
+
+let projectGraph = buildProjectGraph(1)!
+print(projectGraph.buildOrder()!)
+
 //: ---
 //: [Previous](@previous)
