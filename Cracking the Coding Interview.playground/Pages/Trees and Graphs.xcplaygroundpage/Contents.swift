@@ -740,6 +740,8 @@ L.parent = M;
 M.parent = K; M.left = L; M.right = N
 N.parent = M;
 
+let bst2_4_6_root = G
+
 print("")
 print(bst2_4_6_pict)
 result_4_6 = successor(to: A)
@@ -868,7 +870,7 @@ print(projectGraph.buildOrder()!)
      - Can we determine a path from `root` to first node, `X`, and then unwind some recursion to seek a path to second node, `Y`?
      - Obviously, one node must be to the right of the other. Can we use this somehow?
 
- - Callout(Implementation):
+ - Callout(Implementation #1):
      1. Assuming we have parent references
      2. Go to `X.parent`
      3. If `parent.left == X`, search for `Y` in `parent.right`. Do the reverse if `parent.right == X`
@@ -876,6 +878,14 @@ print(projectGraph.buildOrder()!)
      5. If we find `Y`, `parent` is first common ancestor
      6. If we don't find `Y`, we are now seeking the common ancestor of `parent` and `parent.parent`
      7. If we reach a node without parents, we have screwed up
+
+ * Callout(Implementation #2):
+     1. Assume we *do not* have parent references
+     2. Recursively find path from root to first node, `X`
+     3. Upon finding `X`, unwrap the recursion, and we are in `X.parent`
+     4. Search for second node, `Y`, from there
+     5. If we find `Y`, "first common ancestor" is the node we are in
+     6. Note: the challenge here is to communicate back through all the recursion that we have found the "fca" an what it is
  */
 func fcaWithParents<T>(of x: BinaryTreeNode<T>, and y: BinaryTreeNode<T>) -> BinaryTreeNode<T> {
     var newX = x
@@ -903,6 +913,32 @@ func fcaWithParents<T>(of x: BinaryTreeNode<T>, and y: BinaryTreeNode<T>) -> Bin
     } while true
 
     assert(1 == 0)
+}
+
+func fcaWOParents<T>(in under: BinaryTreeNode<T>, from x: BinaryTreeNode<T>, to y: BinaryTreeNode<T>) -> BinaryTreeNode<T>? {
+    if under === x { return x }
+    var ancestorOrX: BinaryTreeNode<T>?
+
+    if under.left != nil {
+        ancestorOrX = fcaWOParents(in: under.left!, from: x, to: y)
+    }
+    if ancestorOrX == nil && under.right != nil {
+        ancestorOrX = fcaWOParents(in: under.right!, from: x, to: y)
+    }
+
+    // walked this entire subtree and did not find X (or any of its ancestors, obviously)
+    guard ancestorOrX != nil else { return nil }
+
+    // found X's parent or older relation. Now we need to find Y.
+/*:
+ * Callout(Explanation of following code):
+     We need a means to "communicate" to the enclosing recursive calls that we have found `X`, `Y` and the "first
+     common ancestor." We do this by passing back `X` itself, and then searching `under` until we find a common
+     ancestor. Once we have found that ancestor, we pass `under` back to become `ancestorOrX` and do no more work.
+ */
+    guard ancestorOrX === x else { return ancestorOrX }
+    guard find(y, under: under) else { return ancestorOrX }
+    return under
 }
 
 func find<T>(_ node: BinaryTreeNode<T>, under: BinaryTreeNode<T>) -> Bool {
@@ -947,14 +983,29 @@ print("fcaWithParents(of: E, and: K): \(result_4_8) [" + ((result_4_8.value=="G"
 result_4_8 = fcaWithParents(of: A, and: F)
 print("fcaWithParents(of: A, and: F): \(result_4_8) [" + ((result_4_8.value=="E") ? "correct" : "incorrect") + "]")
 
-result_4_8 = fcaWithParents(of: E, and: K)
-print("fcaWithParents(of: E, and: K): \(result_4_8) [" + ((result_4_8.value=="G") ? "correct" : "incorrect") + "]")
+result_4_8 = fcaWithParents(of: J, and: N)
+print("fcaWithParents(of: J, and: N): \(result_4_8) [" + ((result_4_8.value=="K") ? "correct" : "incorrect") + "]")
 
 result_4_8 = fcaWithParents(of: H, and: C)
 print("fcaWithParents(of: H, and: C): \(result_4_8) [" + ((result_4_8.value=="G") ? "correct" : "incorrect") + "]")
 
 result_4_8 = fcaWithParents(of: I, and: M)
 print("fcaWithParents(of: I, and: M): \(result_4_8) [" + ((result_4_8.value=="K") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWOParents(in: bst2_4_6_root, from: E, to: K)!
+print("fcaWOParents(in: bst2_4_6_root, from: E, to: K): \(result_4_8) [" + ((result_4_8.value=="G") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWOParents(in: bst2_4_6_root, from: A, to: F)!
+print("fcaWOParents(in: bst2_4_6_root, from: A, to: F): \(result_4_8) [" + ((result_4_8.value=="E") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWOParents(in: bst2_4_6_root, from: J, to: N)!
+print("fcaWOParents(in: bst2_4_6_root, from: J, to: N): \(result_4_8) [" + ((result_4_8.value=="K") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWOParents(in: bst2_4_6_root, from: H, to: C)!
+print("fcaWOParents(in: bst2_4_6_root, from: H, to: C): \(result_4_8) [" + ((result_4_8.value=="G") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWOParents(in: bst2_4_6_root, from: I, to: M)!
+print("fcaWOParents(in: bst2_4_6_root, from: I, to: M): \(result_4_8) [" + ((result_4_8.value=="K") ? "correct" : "incorrect") + "]")
 
 //: ---
 //: [Previous](@previous)
