@@ -3,7 +3,8 @@
 import Foundation
 
 /*: ---
- ## 1.1 **Is Unique:** Implement an algorithm to determine if a string has all unique characters.
+ ## 1.1 Is Unique
+ ### Implement an algorithm to determine if a string has all unique characters.
  */
 
 func allCharactersUnique(in string: String) -> Bool {
@@ -56,15 +57,16 @@ allCharactersUnique3(in: "Example: 1.1 **Is Unique:** Implement an algorithm to 
 
 
 /*: ---
- ## 1.2 Check Permutation: Given two strings, write a method to decide if one is a permutation of the other
- 
- *Plan:*
- 1. traverse characters in first string, adding each to a hash table with the character as key and the count as value
- 2. traverse characters in second string:
-    1. if char not found, not a permutation
-    2. if char found, decrement count
-    3. if count decremented to zero, remove char from hash
- 3. if hash table is empty, it's a permutation, otherwise not
+ ## 1.2 Check Permutation
+ ### Given two strings, write a method to decide if one is a permutation of the other
+
+ * Callout(Plan):
+     1. traverse characters in first string, adding each to a hash table with the character as key and the count as value
+     2. traverse characters in second string:
+        1. if char not found, not a permutation
+        2. if char found, decrement count
+        3. if count decremented to zero, remove char from hash
+     3. if hash table is empty, it's a permutation, otherwise not
  */
 
 extension String {
@@ -100,13 +102,14 @@ extension String {
 "😀😁😂😊🙃".isPermutation(of: "🙃😂😀😁😊")
 
 /*: ---
- ## 1.3 URLify: Write a method to replace all spaces in a string with '%20'. 
+ ## 1.3 URLify
+ ### Write a method to replace all spaces in a string with '%20'.
  You may assume that the string has sufficient space at the end to hold the additional characters, and that you are given the "true" length of the string. If implementing in Java, please use a character array so that you can perform this operation in place.
  
  - Example: Input:    `"Mr John Smith    ", 13`\
             Output    `"Mr%20John%20Smith"`
  
- - Attention: Doing this in Swift without using the Swift Standard Library is entirely too contrived. Therefore, I'm doing it in C.
+ * Callout(Attention): Doing this in Swift without using the Swift Standard Library is entirely too contrived. Therefore, I'm doing it in C.
  */
 
 /*:
@@ -151,15 +154,16 @@ int main() {
 */
 
 /*: ---
- ## 1.4 Palindrome Permutations: Give a string, write a function to check if it is a permutation of a palindrome.
+ ## 1.4 Palindrome Permutations
+ ### Give a string, write a function to check if it is a permutation of a palindrome.
  A palindrom is a word or phrase that is the same forward and backward. A permutation is a rearrangement of letters. The palindrome does not need to be limited to dictionary words.
  
- *Observations:* Because a palindrome is the same forward and backward, an even-length palindrome must have an even number of each letter, and an odd-length palindrome must have exactly one letter with an odd number of occurrences.
+ - Callout(Observations): Because a palindrome is the same forward and backward, an even-length palindrome must have an even number of each letter, and an odd-length palindrome must have exactly one letter with an odd number of occurrences.
  
- *Plan:*
- * Traverse string, counting characters while doing so.
- * For each character, if it is in the set, remove it. If it is not in the set, add it.
- * If the string is even-length, the set should be empty. If the string is odd-length, there should be only one key in the set
+ * Callout(Plan):
+     - Traverse string, counting characters while doing so.
+     - For each character, if it is in the set, remove it. If it is not in the set, add it.
+     - If the string is even-length, the set should be empty. If the string is odd-length, there should be only one key in the set
  */
 func isPalindrome(_ string: String) -> Bool {
     var characterCount = 0
@@ -189,7 +193,8 @@ isPalindrome("Red rum sir is murder")
 isPalindrome("tact coa")
 
 /*: ---
- ## 1.5 One Away: There are three types of edits that can be performed on strings: insert a character, remove a character, or replace a character. Given two strings, write a function to check if they are one edit (or zero edits) away.
+ ## 1.5 One Away
+ ### There are three types of edits that can be performed on strings: insert a character, remove a character, or replace a character. Given two strings, write a function to check if they are one edit (or zero edits) away.
  
  - Example:
  ```
@@ -264,7 +269,8 @@ isOneAway("abcde", "abc")
 isOneAway("abcde", "abcde")
 
 /*: ---
- ## 1.6 String Compression: Implement a method to perform basic string compression using the coutns of repeated characters. For example, the string `aabcccccaaa` would become `a2b1c5a3`. If the "compressed" string would not become smaller than the original string, return the original string. You can assume the string has only upppercase and lowercase letters (a-z).
+ ## 1.6 String Compression
+ ### Implement a method to perform basic string compression using the coutns of repeated characters. For example, the string `aabcccccaaa` would become `a2b1c5a3`. If the "compressed" string would not become smaller than the original string, return the original string. You can assume the string has only upppercase and lowercase letters (a-z).
  */
 func compress(_ str: String) -> String {
     var result = [Character]()
@@ -303,7 +309,8 @@ compress("aabbccdd")
 compress("aabcccccaaa")
 
 /*: ---
- ## 1.7 Rotate Matrix: Given an image represented by an NxN matrix, where each pixel in the image is 4 bytes, write a method to roate the image by 90º. Can you do this in place?
+ ## 1.7 Rotate Matrix
+ ### Given an image represented by an NxN matrix, where each pixel in the image is 4 bytes, write a method to roate the image by 90º. Can you do this in place?
  
  - Note: We are going to rotate in layers. We perform a circular rotation on each layer, moving the top edge to the right edige, the right edge to the bottom edge, the bottom edge to the left edge, and the left edge to the top edge. We can do this by copying the top edge to an array, and then move the left to the top, the bottom to the left, and so on. This requires `O(N)` memory, which is actually unnecessary.
 
@@ -319,7 +326,7 @@ compress("aabcccccaaa")
  
  - Note: We perform such a swap on each layer, starting from the outermost later and working our way inward.
 
- - Remark: I came up with a solution, but it was inefficient. Below is the solution from the book.
+ * Callout(Remark): I came up with a solution, but it was inefficient. Below is the solution from the book.
  */
 func rotate( _ matrix: inout [[Any]]) -> Bool {
     guard matrix.count != 0, matrix[0].count != 0 else { return false }
@@ -375,7 +382,8 @@ rotate(&tempMatrix)
 charMatrix = tempMatrix as! [[String]]
 
 /*: ---
- ## 1.8 Zero Matrix: Write an algorithm such that, if an element in an `NxM` matrix is 0, its entire row and column are set to 0.
+ ## 1.8 Zero Matrix
+ ### Write an algorithm such that, if an element in an `NxM` matrix is 0, its entire row and column are set to 0.
  
  - Note: The trick here is to not set any rows or columns to zero until we know which rows and/or columns initially contain zeros.
  */
@@ -442,7 +450,8 @@ let matrix2 = [
 zeroOutRowsAndColumns(matrix2)
 
 /*: ---
- ## 1.9 String Rotation: Assume you have a method `isSubstring` which checks if one word is a substring of another. Given two strings, `s1` and `s2`, write code to check if `s2` is a rotation of `s1` using only one call to `isSubstring`. (e.g., "`erbottlewat`" is a rotation of "`waterbottle`".)
+ ## 1.9 String Rotation
+ ### Assume you have a method `isSubstring` which checks if one word is a substring of another. Given two strings, `s1` and `s2`, write code to check if `s2` is a rotation of `s1` using only one call to `isSubstring`. (e.g., "`erbottlewat`" is a rotation of "`waterbottle`".)
 
  - Note: I came up with a solution, but I feel like it cheats because it uses the Swift equivalent of `strcmp`, which must reasonably be off limits in this problem. (The key hint is that only `isSubstring` can be used.)
 

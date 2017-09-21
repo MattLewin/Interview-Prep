@@ -4,7 +4,8 @@ import Darwin // for arc4random()
 import Foundation
 
 /*: ---
- ## 3.1 Three in One: Describe how you could use a single array to implement three stacks
+ ## 3.1 Three in One
+ ### Describe how you could use a single array to implement three stacks
  
  * Callout(Plan): Use an array and a set of three indexes into that array. Each of those indexes will be a top of one of the stacks. Each element of a given stack will be offset from the next element in the stack by 3, thus allowing us three co-existing stacks.
  
@@ -101,7 +102,8 @@ do {
 }
 
 /*: ---
- ## 3.2 Stack Min: How would you design a stack that, in addition to `push` and `pop`, has a function, `min`, that returns the minimum element? `Push`, `pop`, and `min` should all operate in `O(1)` time.
+ ## 3.2 Stack Min
+ ### How would you design a stack that, in addition to `push` and `pop`, has a function, `min`, that returns the minimum element? `Push`, `pop`, and `min` should all operate in `O(1)` time.
  
  * Callout(Plan):
     A. Include minimum value in stack as part of the element data structure
@@ -113,9 +115,8 @@ do {
     (B) is good if the stack is huge, because we only grow the 'min stack' when we push a new minimum
  
     Let's do (B)
- 
 
- * Callout(Implementation Details):
+ - Callout(Implementation Details):
     - `peek()` should return top value per ususal
     - `push()` should push onto minimum stack if new value is <= top of minimum stack. (Pushing equal so we can pop equal values and still maintain the prior minimum.)
     - `pop()` should pop the minimum stack if existing top.value == minimum
@@ -198,12 +199,12 @@ print("\n3.3 Stack with min(): Current Stack State:")
 print(stackWithMin.description)
 
 /*: ---
- ## 3.3 Stack of Plates: Imagine a literal stack of plates. If the stack gets too high, it might topple. Therefore, in real life, we would likely start a new stack when the previous stack exceeds some threshold. Implement a data structure, `SetofStacks` that mimics this. `SetOfStacks` should be composed of several stacks and should create a new stack once the previous one exceeds capacity. `SetOfStacks.push()` and `SetOfStacks.pop()` should behave identically to a single stack. (That is, `pop()` should return the same values as if there were just a single stack.)
+ ## 3.3 Stack of Plates
+ ### Imagine a literal stack of plates. If the stack gets too high, it might topple. Therefore, in real life, we would likely start a new stack when the previous stack exceeds some threshold. Implement a data structure, `SetofStacks` that mimics this. `SetOfStacks` should be composed of several stacks and should create a new stack once the previous one exceeds capacity. `SetOfStacks.push()` and `SetOfStacks.pop()` should behave identically to a single stack. (That is, `pop()` should return the same values as if there were just a single stack.)
  
  * Callout(Follow Up): Implement a function `popAt(int index)` that performs a pop operation on a specific substack.
- 
 
- * Callout(Plan):
+ - Callout(Plan):
     - Data structure needs one or more stacks => array, list, or stack of substacks. 
         - The stack of substacks is out, because `popAt` will be unreasonably difficult to implement with a stack of substacks.
         - A linked list allows us to harvest empty stack nodes versus keeping around unused array elements. Each empty stack in an array, though, will consume almost no memory. Thus, we are going with an array.
@@ -341,7 +342,8 @@ do {
 }
 
 /*: ---
- ## 3.4 Queue via Stacks: Implement `MyQueue`, which implements a queue using two stacks.
+ ## 3.4 Queue via Stacks
+ ### Implement `MyQueue`, which implements a queue using two stacks.
  
  * Callout(Plan): The FIFO nature of a queue can be implemented by having "tail" and "head" stacks. When `enqueu`ing, we push the new element onto the "tail" stack. This means the first-in element will always be at the bottom of that stack. When `dequeu`ing, we `pop()` the top element of the "head" stack. If that stack is empty, we "move" the "tail" stack to the "head" stack. "Move" in this context means `pop`ping each element from the "tail" stack and `push`ing it onto the "head" stack. This will leave the "head" stack with the elments `pop`able in FIFO order.
  */
@@ -403,15 +405,15 @@ print("o queue with next element dequeued: " + String(describing: myQ))
 
 
 /*: ---
- ## 3.5 Sort Stack: write a program to sort a stack such that the smallest items are on top. You can use a temporary stack, but no other data structure (i.e., an array). The stack should support `push`, `pop`, `peek`, and `isEmpty`.
+ ## 3.5 Sort Stack
+ ### Write a program to sort a stack such that the smallest items are on top. You can use a temporary stack, but no other data structure (i.e., an array). The stack should support `push`, `pop`, `peek`, and `isEmpty`.
  
  * Callout(Plan): When pushing a new value, we need to ensure the new value is placed beneath any lesser values and above any greater
     values. => popping elements and pushing them onto a temporary stack until we reach a value greater than or equal to our new item.
  
     In addition, to make things more efficient, we only need to "consolidate" the two stacks when we want to `pop` or `peek`.
- 
 
- * Callout(Implementation Details for `push`):
+ - Callout(Implementation Details for `push`):
     1. While the sorted stack is not empty, compare new item to `top` of storted stack
     2. if `item` > than `top`, pop sorted and push to minimums stack, and then continue the loop
     3. if `item` == `top`, push it onto the sorted stack
@@ -512,7 +514,8 @@ print("Peeking at sorted stack: \(try! ss.peek())")
 print("SortedStack: \(String(describing: ss))")
 
 /*: ---
- ## 3.5 (redux): I misread the problem. The challenge was to sort an (unsorted) stack using at most one other stack. I've already looked at the answer, so I don't know what I would have come up with. Here's what the book provides.
+ ## 3.5 (redux)
+ ### I misread the problem. The challenge was to sort an (unsorted) stack using at most one other stack. I've already looked at the answer, so I don't know what I would have come up with. Here's what the book provides.
  
  * Callout(Plan): We will build a stack sorted from highest to lowest, and then reverse it by putting it back into the original stack
     1. Pop the top of the unsorted stack, `s1`, and store that value in a temporary variable
@@ -521,8 +524,8 @@ print("SortedStack: \(String(describing: ss))")
     4. Push our temp value onto `s2`
     5. Repeat until `s1` is empty
     6. Reverse `s2` by popping each element and pushing it into `s1`
- 
- * Complexity: `O(N^2)` time and `O(N)` space
+
+ - Callout(Complexity): `O(N^2)` time and `O(N)` space
  */
 func sort<T:Comparable>(_ s1: inout Stack<T>) {
     var s2 = Stack<T>()
@@ -564,9 +567,8 @@ print("  sorted stackToSort: \(String(describing: stackToSort))")
 
 
 /*: ---
- ## 3.6 Animal Shelter: A shelter operates on a FIFO basis, taking in dogs and cats. A human can request the oldest pet, oldest dog,
-    or oldest cat. Implement `dequeueCat`, `dequeueDog`, `dequeueAny`, and `enqueue`. You can use the built-in `LinkedList`. (But,
-    this not being Java, we don't have such a thing.)
+ ## 3.6 Animal Shelter
+ ### A shelter operates on a FIFO basis, taking in dogs and cats. A human can request the oldest pet, oldest dog, or oldest cat. Implement `dequeueCat`, `dequeueDog`, `dequeueAny`, and `enqueue`. You can use the built-in `LinkedList`. (But, this not being Java, we don't have such a thing.)
  
  * Callout(Initial Thoughts):
     - two linked lists, one for dogs, one for cats

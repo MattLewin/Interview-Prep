@@ -4,7 +4,8 @@ import Foundation
 
 
 /*: ---
- ## 2.1 Remove Dups: Write an algorithm to remove duplicate elements from an unsorted linked list
+ ## 2.1 Remove Dups
+ ### Write an algorithm to remove duplicate elements from an unsorted linked list
  */
 func removeDups<T: Hashable>(from list: ListNode<T>) {
     var uniques = Set<T>()
@@ -73,7 +74,8 @@ let strList = makeListFrom("ABCDEFG")
 print(strList.description())
 
 /*: ---
- ## 2.2 Return Kth to last element: implement an algorithm to find the Kth to last element of a singly-linked list
+ ## 2.2 Return Kth to last element
+ ### Implement an algorithm to find the Kth to last element of a singly-linked list
  
  * Callout(Plan): Create two pointers, `seeking` and `trailing`, pointing at the head of the list. Walk `seeking` through the list until it reaches the `K`th element of the list. Walk both `seeking` and `trailing` until `seeking` reaches the end of the list. Return the element `trailing` points at.
  */
@@ -99,7 +101,8 @@ let element = findElement(k: 3, fromEndOf: strList)
 print("element=\(element?.value ?? "0")")
 
 /*: ---
- ## 2.3 Delete Middle Node: Implement an algorithm to delete a node in the middle (i.e., any node but the first and last nodes, not necessarily the exact middle) of a singly linked list, given only access to that node.
+ ## 2.3 Delete Middle Node
+ ### Implement an algorithm to delete a node in the middle (i.e., any node but the first and last nodes, not necessarily the exact middle) of a singly linked list, given only access to that node.
  
  ```
  Input: the node c from the linked list a->b->c->d->e->f
@@ -120,7 +123,8 @@ delete(cNode)
 print(deleteTestList.description())
 
 /*: ---
- ## 2.4 Partition a linked list around a value `X` such that all values less than `X` come before all values greater than or equal to `X`. Numbers larger than `X` can come before `X`, as long as no smaller numbers come before any number `X` or greater.
+ ## 2.4 Partition a Linked List
+ ### Partition a linked list around a value `X` such that all values less than `X` come before all values greater than or equal to `X`. Numbers larger than `X` can come before `X`, as long as no smaller numbers come before any number `X` or greater.
  
  * Callout(Plan): walk the list until we encounter a number `X` or greater. Keep a reference, `target`, to that element, and increment the other pointer until we find a number less than `X`. Swap the two values. Increment `target` to the next element. Traverse with the second pointer until we either find a number less than `X` or reach the end of the list. Each time we find a number less than `X`, swap it with `target` element and increment `target`.
  
@@ -172,7 +176,8 @@ partition(partitionList, by: "E")
 print("partition by 'E' : \(partitionList.description())")
 
 /*: ---
- ## 2.5 Sum Lists: You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in *reverse* order, such that the 1's digit is at the head of the list. Write a function that adds the two numbers and returns the sum as a linked list.
+ ## 2.5 Sum Lists
+ ### You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in *reverse* order, such that the 1's digit is at the head of the list. Write a function that adds the two numbers and returns the sum as a linked list.
  
  - Example:
     Input: (7 -> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
@@ -233,7 +238,8 @@ print("(\(sumList1.description())) + (\(sumList2.description())) = (\(sumResult.
 
 
 /*: ---
- ## 2.6 Palindrome: Implement a function to check if a linked list is a palindrome
+ ## 2.6 Palindrome
+ ### Implement a function to check if a linked list is a palindrome
  
  * Callout(Plan):
     1. traverse list, counting nodes and building a new list by prepending erach value we find (this gives us a reversed version of the initial list)
@@ -274,15 +280,16 @@ let palindromeTest4 = makeListFrom("redrumsirismurder")
 print("(\(palindromeTest4.description())) is a palindrome: \(isPalindrome(palindromeTest4))")
 
 /*: ---
- ## 2.7 Intersection: Given two singly-linked lists, determine if the two lists intersect. Return the intersecting node.
+ ## 2.7 Intersection
+ ### Given two singly-linked lists, determine if the two lists intersect. Return the intersecting node.
  
  - Note: Intersection is defined as the same node (by reference), not just a node containing the same value
  
  * Callout(Plan): Traverse the first list adding each node (or its address) to a Set. Traverse the second list, checking each node (or its address) for existence in the set.
  
- * Callout(Questions):
-    1. Are `Node`s `Hashable`? Not to my knowledge.
- 2. Can we get the address of a `Node`? Maybe. (Yes, see [General Helpers](../../Sources/General%20Helpers.swift).)
+ - Callout(Questions):
+     1. Are `Node`s `Hashable`? Not to my knowledge.
+     2. Can we get the address of a `Node`? Maybe. (Yes, see [General Helpers](../../Sources/General%20Helpers.swift).)
  */
 func intersection<T: Hashable>(between list1: ListNode<T>, and list2: ListNode<T>) -> ListNode<T>? {
     var nodes = Set<Int>()
@@ -316,7 +323,8 @@ print("intersectionList2: \(intersectionList2.description())")
 print("intersection(between: intersectionList, and: intersectionList2): \(intersection(between: intersectionList, and: intersectionList2)!.description())")
 
 /*: ---
- ## 2.8 Loop Detection: given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
+ ## 2.8 Loop Detection
+ ### Given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
  
  * Callout(Definition): Circular linked list: A (corrupt) linked list in which a node's next pointer points to an earlier node, so as to make a loop in the linked list.
  

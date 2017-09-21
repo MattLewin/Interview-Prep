@@ -3,7 +3,8 @@
 import Foundation
 
 /*: ---
- ## 4.1 Route Between Nodes: Given a directed graph, design an algorithm to find out whether there is a route between two nodes.
+ ## 4.1 Route Between Nodes
+ ### Given a directed graph, design an algorithm to find out whether there is a route between two nodes.
  
  * Callout(Thoughts): This sounds like a simple breadth-first search from the `source` to the `target`. That is, traverse each adjacent node from `source` looking for `target`. If `target` isn't found, check each adjacent node of the nodes adjacent to `target`. Repeat until `target` is found or all adjacent nodes checked.
 
@@ -89,7 +90,8 @@ graph = createGraph()
 print("dfsPathExists(from: graph[2], to: graph[4]): \(dfsPathExists(from: graph[2], to: graph[4]))")
 
 /*: ---
- ## 4.2 Minimal Tree: Given a sorted (increasing order) array with unique integer elements, write an algorithm to create a binary search tree with minimal height.
+ ## 4.2 Minimal Tree
+ ### Given a sorted (increasing order) array with unique integer elements, write an algorithm to create a binary search tree with minimal height.
  
  * Callout(Thoughts & Plan):
     1. BST *does not* need to be complete
@@ -152,7 +154,8 @@ print("\nBinary Search Tree from \(elements)")
 inOrderTraversal(makeBST(from: elements), debug: true)
 
 /*: ---
- ## 4.3 List of Depths: given a binary tree, create an algorithm that creates a linked list of all the nodes at each depth. (i.e., if you have a tree of depth `D`, you will have `D` linked lists.)
+ ## 4.3 List of Depths
+ ### Given a binary tree, create an algorithm that creates a linked list of all the nodes at each depth. (i.e., if you have a tree of depth `D`, you will have `D` linked lists.)
  
  * Callout(Thoughts):
     1. preorder traversal (though I think it doesn't matter), adding each node to the appropriate linked list
@@ -285,7 +288,8 @@ print("nodesList: \(nodesList)")
 print("")
 
 /*: ---
- ## 4.4 Check Balanced: Implement a function to check if a binary tree is balanced. For the purposes of this question, a balanced tree is defined as a tree such that the heights of the two subtrees of any node never differ by more than one.
+ ## 4.4 Check Balanced
+ ### Implement a function to check if a binary tree is balanced. For the purposes of this question, a balanced tree is defined as a tree such that the heights of the two subtrees of any node never differ by more than one.
  
  * Callout(Thoughts):
     1. Given a node, we need to determine the height of each subtree. --> we don't technically need the height, just need to determine whether heights differ by more than 1. Can we use this distinction?
@@ -416,7 +420,8 @@ print("isBalanced(invalid2_4_4[0]): \(result_4_4) [" + ((result_4_4==false) ? "c
 
 
 /*: ---
- ## 4.5 Validate Binary Search Tree: implement a function to check whether a binary tree is a binary *search* tree.
+ ## 4.5 Validate Binary Search Tree
+ ### Implement a function to check whether a binary tree is a binary *search* tree.
 
  * Callout(Thoughts):
      1. Definition of BST: a binary tree where the value of each node in the left subtree is <= the node value, and the value of every node in the right subtree is > the node value.
@@ -573,7 +578,8 @@ result_4_5 = isBST(invalid3_4_5_root)
 print("isBST(invalid3_4_5_root): \(result_4_5) [" + ((result_4_5==false) ? "correct" : "incorrect") + "]")
 
 /*: ---
- ## 4.6 Successor: Write an algorithm to find the "next" node (i.e., in-order successor) of a given node in a binary search tree. You may assume that each node has a link to its parent.
+ ## 4.6 Successor
+ ### Write an algorithm to find the "next" node (i.e., in-order successor) of a given node in a binary search tree. You may assume that each node has a link to its parent.
 
  * Callout(Thoughts):
      1. in-order is left child, node, right child
@@ -761,7 +767,8 @@ result_4_6 = successor(to: N)
 print("successor(to: N): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value==nil) ? "correct" : "incorrect") + "]")
 
 /*: ---
- ## 4.7 Build Order: You are given a list of projects and a list of dependencies, which is a list of pairs of projects, where the second project depends on the first project. All of a project's dependencies msut be built before the project is built. Find a build order that will allow the projects to be built, or return an error if there is no valid build order.
+ ## 4.7 Build Order
+ ### You are given a list of projects and a list of dependencies, which is a list of pairs of projects, where the second project depends on the first project. All of a project's dependencies msut be built before the project is built. Find a build order that will allow the projects to be built, or return an error if there is no valid build order.
 
  ````
  Input:
@@ -861,7 +868,8 @@ let projectGraph = buildProjectGraph(1)!
 print(projectGraph.buildOrder()!)
 
 /*: ---
- ## 4.8 First Common Ancestor: Design an algorithm and write code to find the first common ancestor of two nodes in a binary tree. Avoid storing additional nodes in a data structure. NOTE: this is not necessarily a BST.
+ ## 4.8 First Common Ancestor
+ ### Design an algorithm and write code to find the first common ancestor of two nodes in a binary tree. Avoid storing additional nodes in a data structure. NOTE: this is not necessarily a BST.
 
  * Callout(Thoughts):
      - Do we have parent references in nodes?
