@@ -860,5 +860,101 @@ print("\n---------- 4.7 Build Order ----------")
 let projectGraph = buildProjectGraph(1)!
 print(projectGraph.buildOrder()!)
 
+/*: ---
+ ## 4.8 First Common Ancestor: Design an algorithm and write code to find the first common ancestor of two nodes in a binary tree. Avoid storing additional nodes in a data structure. NOTE: this is not necessarily a BST.
+
+ * Callout(Thoughts):
+     - Do we have parent references in nodes?
+     - Can we determine a path from `root` to first node, `X`, and then unwind some recursion to seek a path to second node, `Y`?
+     - Obviously, one node must be to the right of the other. Can we use this somehow?
+
+ - Callout(Implementation):
+     1. Assuming we have parent references
+     2. Go to `X.parent`
+     3. If `parent.left == X`, search for `Y` in `parent.right`. Do the reverse if `parent.right == X`
+     4. If `parent` has only one child, we are now seeking the common ancestor of `parent` and `parent.parent`
+     5. If we find `Y`, `parent` is first common ancestor
+     6. If we don't find `Y`, we are now seeking the common ancestor of `parent` and `parent.parent`
+     7. If we reach a node without parents, we have screwed up
+ */
+func fcaWithParents<T>(of x: BinaryTreeNode<T>, and y: BinaryTreeNode<T>) -> BinaryTreeNode<T> {
+    var newX = x
+    var parent = x.parent!
+    var searchNode: BinaryTreeNode<T>
+
+    repeat {
+        guard parent.left != nil, parent.right != nil else {
+            newX = parent
+            parent = parent.parent!
+            continue
+        }
+
+        if parent.left! === newX {
+            searchNode = parent.right!
+        }
+        else {
+            searchNode = parent.left!
+        }
+
+        guard searchNode !== y else { return parent }
+        guard !find(y, under: searchNode) else { return parent }
+        newX = parent
+        parent = parent.parent!
+    } while true
+
+    assert(1 == 0)
+}
+
+func find<T>(_ node: BinaryTreeNode<T>, under: BinaryTreeNode<T>) -> Bool {
+    // depth first search
+    if under === node { return true }
+    if under.left != nil && find(node, under: under.left!) {
+        return true
+    }
+    if under.right != nil && find(node, under: under.right!) {
+        return true
+    }
+
+    return false
+}
+
+print("\n---------- 4.8 First Common Ancestor ----------")
+var result_4_8: BinaryTreeNode<Character>
+/*:
+ We will use "binary search tree #2" from `4.6` to test
+ ```
+                G
+               / \
+              /   \
+             /     \
+            E       K
+           / \     / \
+          /   \   /   \
+         /    |   |    \
+        B     F   I     M
+       / \       / \   / \
+      /   \     /   |  |  \
+     A     C   H    J  L   N
+            \
+             D
+ */
+print("")
+print(bst2_4_6_pict)
+
+result_4_8 = fcaWithParents(of: E, and: K)
+print("fcaWithParents(of: E, and: K): \(result_4_8) [" + ((result_4_8.value=="G") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWithParents(of: A, and: F)
+print("fcaWithParents(of: A, and: F): \(result_4_8) [" + ((result_4_8.value=="E") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWithParents(of: E, and: K)
+print("fcaWithParents(of: E, and: K): \(result_4_8) [" + ((result_4_8.value=="G") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWithParents(of: H, and: C)
+print("fcaWithParents(of: H, and: C): \(result_4_8) [" + ((result_4_8.value=="G") ? "correct" : "incorrect") + "]")
+
+result_4_8 = fcaWithParents(of: I, and: M)
+print("fcaWithParents(of: I, and: M): \(result_4_8) [" + ((result_4_8.value=="K") ? "correct" : "incorrect") + "]")
+
 //: ---
 //: [Previous](@previous)
