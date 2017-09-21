@@ -6,9 +6,8 @@ import Foundation
  ## 4.1 Route Between Nodes: Given a directed graph, design an algorithm to find out whether there is a route between two nodes.
  
  * Callout(Thoughts): This sounds like a simple breadth-first search from the `source` to the `target`. That is, traverse each adjacent node from `source` looking for `target`. If `target` isn't found, check each adjacent node of the nodes adjacent to `target`. Repeat until `target` is found or all adjacent nodes checked.
- 
- 
- * Callout(Further Thoughts): Because we are not seeking the shortest path, simply whether there *is* a path, there is no reason we must use a breadth-first search instead of a depth-first search. Thus, I will implement both.
+
+ - Callout(Further Thoughts): Because we are not seeking the shortest path, simply whether there *is* a path, there is no reason we must use a breadth-first search instead of a depth-first search. Thus, I will implement both.
  */
 func bfsPathExists<T: Comparable>(from: GraphNode<T>, to: GraphNode<T>) -> Bool {
     var toVisit = [GraphNode<T>]()
@@ -101,8 +100,7 @@ print("dfsPathExists(from: graph[2], to: graph[4]): \(dfsPathExists(from: graph[
         4. if element count is 2, return a node with `root = elements[1]` and `root.left = elements[0]`
         5. if element count is 3, return a node with root, left, and right equal to `elements[1]`, `elements[0]`, and `elements[2]`, respectively
 
- 
- * Note: if element count is 0, behavior is undefined
+ - Note: if element count is 0, behavior is undefined
  */
 func makeBST(from elements: [Int]) -> BinaryTreeNode<Int> {
     // Note, this function assumes at least one element in `elements`
@@ -421,13 +419,13 @@ print("isBalanced(invalid2_4_4[0]): \(result_4_4) [" + ((result_4_4==false) ? "c
  ## 4.5 Validate Binary Search Tree: implement a function to check whether a binary tree is a binary *search* tree.
 
  * Callout(Thoughts):
- 1. Definition of BST: a binary tree where the value of each node in the left subtree is <= the node value, and the value of every node in the right subtree is > the node value.
- 2. At root of tree, `max` and `min` are undefined
- 3. When we traverse left, we pass along `min`, and we update `max` with the value of the node we are leaving
- 4. When we traverse right, we pass along `max`, and we update `min` with the value of the node we are leaving
- 5. If `node`'s value is `<= min`, this is *not* a binary search tree
- 6. If `node`'s value is `> max`, this is *not* a binary search tree
- 7. If we run out of nodes and haven't tripped over over (5) or (6), this is a binary search tree
+     1. Definition of BST: a binary tree where the value of each node in the left subtree is <= the node value, and the value of every node in the right subtree is > the node value.
+     2. At root of tree, `max` and `min` are undefined
+     3. When we traverse left, we pass along `min`, and we update `max` with the value of the node we are leaving
+     4. When we traverse right, we pass along `max`, and we update `min` with the value of the node we are leaving
+     5. If `node`'s value is `<= min`, this is *not* a binary search tree
+     6. If `node`'s value is `> max`, this is *not* a binary search tree
+     7. If we run out of nodes and haven't tripped over over (5) or (6), this is a binary search tree
  */
 func isBST<T: Comparable>(_ node: BinaryTreeNode<T>, min: T? = nil, max: T? = nil) -> Bool {
     let value = node.value
