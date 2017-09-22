@@ -668,6 +668,8 @@ bst1_4_6[0].parent = bst1_4_6[1] // B <- A
 bst1_4_6[3].parent = bst1_4_6[4] // E <- D
 bst1_4_6[5].parent = bst1_4_6[4] // E <- F
 
+let bst1_4_6_root = bst1_4_6[2]
+
 print(bst1_4_6_pict)
 result_4_6 = successor(to: bst1_4_6[0]) // test A
 print("successor(to: A): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=="B") ? "correct" : "incorrect") + "]")
@@ -1012,6 +1014,88 @@ print("fcaWOParents(in: bst2_4_6_root, from: H, to: C): \(result_4_8) [" + ((res
 
 result_4_8 = fcaWOParents(in: bst2_4_6_root, from: I, to: M)!
 print("fcaWOParents(in: bst2_4_6_root, from: I, to: M): \(result_4_8) [" + ((result_4_8.value=="K") ? "correct" : "incorrect") + "]")
+
+/*: ---
+ ## 4.9 BST Sequences
+ ### A binary search tree was created by traversing through an array from left to right, inserting each element. Given a binary search tree with distinct elements, print all possible arrays that could have produced this tree.
+
+ * Callout(Thoughts/Plan):
+     1. The `root.value` is always the first value of each of the result arrays
+     2. When visiting a node, we add each child node to a list of "reachables" (sort of like a queue in a breadth-first search)
+     3. We append `node.value` to the "partial result"
+     4. For every node in "reachables," we remove it from "reachables" and then recursively process that node with the remaining "reachables." (i.e., we return to step #2, above)
+     5. If the reachables list is empty, we have found a sequence and return it
+     6. The result of the "processing" in #4 is one sequence for each "reachable" node. The array of these sequences is the desired result, namely all possible arrays that could have produced the provided BST
+ */
+func process<T>(node: BinaryTreeNode<T>, reachables: [BinaryTreeNode<T>]? = nil, partialResult: [T]? = nil) -> [[T]] {
+    var newReachables = reachables ?? [BinaryTreeNode<T>]()
+    var newPartial = partialResult ?? [T]()
+    newPartial.append(node.value)
+
+    if node.left != nil {
+        newReachables.append(node.left!)
+    }
+    if node.right != nil {
+        newReachables.append(node.right!)
+    }
+    guard !newReachables.isEmpty else {
+        return [newPartial]
+    }
+
+    var results = [[T]]()
+    for reachableNode in newReachables {
+        let result = process(node: reachableNode,
+                             reachables: newReachables.filter({ $0 !== reachableNode}),
+                             partialResult: newPartial)
+        results.append(contentsOf: result)
+    }
+    return results
+}
+print("\n---------- 4.9 BST Sequences ----------")
+/*:
+ we will use "valid binary tree #1" from `4.5` for our first test
+ ```
+        C
+       / \
+      /   \
+     B     D
+    /       \
+   /         \
+  A           E
+ ```
+ */
+let bst1_4_5_pict = """
+ valid binary tree #1
+        C
+       / \\
+      /   \\
+     B     D
+    /       \\
+   /         \\
+  A           E
+
+"""
+print(bst1_4_5_pict)
+print("Arrays that could have created the above binary search tree: (trust me, it's correct)")
+print(process(node: valid1_4_5_root))
+
+/*:
+ We will use "binary search tree #1" from `4.6` for our second test
+ ```
+        C
+       / \
+      /   \
+     B     E
+    /     / \
+   /     /   \
+  A     D     F
+ ```
+ */
+print("")
+print(bst1_4_6_pict)
+
+print("Arrays that could have created the above binary search tree: (trust me, it's correct)")
+print(process(node: bst1_4_6_root))
 
 //: ---
 //: [Previous](@previous)
