@@ -1,7 +1,6 @@
 //: [Previous](@previous)  [Next](@next)
 //: # Arrays and Strings
 import Foundation
-
 /*: ---
  ## 1.1 Is Unique
  ### Implement an algorithm to determine if a string has all unique characters.
@@ -156,7 +155,7 @@ int main() {
 /*: ---
  ## 1.4 Palindrome Permutations
  ### Give a string, write a function to check if it is a permutation of a palindrome.
- A palindrom is a word or phrase that is the same forward and backward. A permutation is a rearrangement of letters. The palindrome does not need to be limited to dictionary words.
+ A palindrome is a word or phrase that is the same forward and backward. A permutation is a rearrangement of letters. The palindrome does not need to be limited to dictionary words.
  
  - Callout(Observations): Because a palindrome is the same forward and backward, an even-length palindrome must have an even number of each letter, and an odd-length palindrome must have exactly one letter with an odd number of occurrences.
  
@@ -270,7 +269,7 @@ isOneAway("abcde", "abcde")
 
 /*: ---
  ## 1.6 String Compression
- ### Implement a method to perform basic string compression using the coutns of repeated characters. For example, the string `aabcccccaaa` would become `a2b1c5a3`. If the "compressed" string would not become smaller than the original string, return the original string. You can assume the string has only upppercase and lowercase letters (a-z).
+ ### Implement a method to perform basic string compression using the counts of repeated characters. For example, the string `aabcccccaaa` would become `a2b1c5a3`. If the "compressed" string would not become smaller than the original string, return the original string. You can assume the string has only upppercase and lowercase letters (a-z).
  */
 func compress(_ str: String) -> String {
     var result = [Character]()
@@ -310,7 +309,7 @@ compress("aabcccccaaa")
 
 /*: ---
  ## 1.7 Rotate Matrix
- ### Given an image represented by an NxN matrix, where each pixel in the image is 4 bytes, write a method to roate the image by 90º. Can you do this in place?
+ ### Given an image represented by an NxN matrix where each pixel in the image is 4 bytes, write a method to roate the image by 90º. Can you do this in place?
  
  - Note: We are going to rotate in layers. We perform a circular rotation on each layer, moving the top edge to the right edige, the right edge to the bottom edge, the bottom edge to the left edge, and the left edge to the top edge. We can do this by copying the top edge to an array, and then move the left to the top, the bottom to the left, and so on. This requires `O(N)` memory, which is actually unnecessary.
 

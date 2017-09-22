@@ -1,8 +1,6 @@
 //: [Previous](@previous)  [Next](@next)
 //: # Small examples from Cracking the Coding Interview
 import Foundation
-
-
 //: ## Unnecessary work (p. 68)
 //: - Example: Print all positive integer solutions to the equation `a^3 + b^3 = c^3 + d^3`
 let n = 100

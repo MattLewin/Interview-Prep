@@ -1,7 +1,6 @@
 //: [Previous](@previous)
 //: # Trees and Graphs
 import Foundation
-
 /*: ---
  ## 4.1 Route Between Nodes
  ### Given a directed graph, design an algorithm to find out whether there is a route between two nodes.
@@ -294,7 +293,7 @@ print("")
  * Callout(Thoughts):
     1. Given a node, we need to determine the height of each subtree. --> we don't technically need the height, just need to determine whether heights differ by more than 1. Can we use this distinction?
     2. If we do want to determine height of each subtree, how would we do this and "communicate" it to the parent node?
-    3. Function to determine height of tree returning that height. Call with left and right subtrees, and compare. Return whichever height is greater, as long as the difrerence isn't more than 1, otherwise...*what?*
+    3. Function to determine height of tree returning that height. Call with left and right subtrees, and compare. Return whichever height is greater, as long as the difference isn't more than 1, otherwise...*what?*
         1. could return a tuple of (height, `true`/`false`) or even an `enum` with those two types
         2. Could just return height and let the enclosing function deal. **<-- let's do this**
  */
@@ -430,7 +429,7 @@ print("isBalanced(invalid2_4_4[0]): \(result_4_4) [" + ((result_4_4==false) ? "c
      4. When we traverse right, we pass along `max`, and we update `min` with the value of the node we are leaving
      5. If `node`'s value is `<= min`, this is *not* a binary search tree
      6. If `node`'s value is `> max`, this is *not* a binary search tree
-     7. If we run out of nodes and haven't tripped over over (5) or (6), this is a binary search tree
+     7. If we run out of nodes and haven't tripped over (5) or (6), this is a binary search tree
  */
 func isBST<T: Comparable>(_ node: BinaryTreeNode<T>, min: T? = nil, max: T? = nil) -> Bool {
     let value = node.value
@@ -770,7 +769,7 @@ print("successor(to: N): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=
 
 /*: ---
  ## 4.7 Build Order
- ### You are given a list of projects and a list of dependencies, which is a list of pairs of projects, where the second project depends on the first project. All of a project's dependencies msut be built before the project is built. Find a build order that will allow the projects to be built, or return an error if there is no valid build order.
+ ### You are given a list of projects and a list of dependencies, which is a list of pairs of projects, where the second project depends on the first project. All of a project's dependencies must be built before the project is built. Find a build order that will allow the projects to be built, or return an error if there is no valid build order.
 
  ````
  Input:
@@ -782,7 +781,7 @@ print("successor(to: N): \(result_4_6?.value ?? "∅") [" + ((result_4_6?.value=
 
  * Callout(Thoughts):
      1. projects are each a vertex, and dependencies are each a directed edge
-     2. we have to determine whether there is a path from any one vertext to all the others
+     2. we have to determine whether there is a path from any one vertex to all the others
 
  - Callout(More Considered Thoughts):
      1. build the graph of each vertex with the edges from the project to the dependency, counting the number of "depending" projects

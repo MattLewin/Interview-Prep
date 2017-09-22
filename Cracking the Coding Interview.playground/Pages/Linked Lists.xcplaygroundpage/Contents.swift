@@ -1,8 +1,6 @@
 //: [Previous](@previous)  [Next](@next)
 //: # Linked Lists
 import Foundation
-
-
 /*: ---
  ## 2.1 Remove Dups
  ### Write an algorithm to remove duplicate elements from an unsorted linked list
@@ -242,7 +240,7 @@ print("(\(sumList1.description())) + (\(sumList2.description())) = (\(sumResult.
  ### Implement a function to check if a linked list is a palindrome
  
  * Callout(Plan):
-    1. traverse list, counting nodes and building a new list by prepending erach value we find (this gives us a reversed version of the initial list)
+    1. traverse list, counting nodes and building a new list by prepending each value we find (this gives us a reversed version of the initial list)
     2. traverse and compare the first `length/2` elements of both lists, returning false if they don't match, true otherwise
  */
 func isPalindrome(_ list: ListNode<Character>) -> Bool {

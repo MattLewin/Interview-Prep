@@ -117,7 +117,7 @@ do {
     Let's do (B)
 
  - Callout(Implementation Details):
-    - `peek()` should return top value per ususal
+    - `peek()` should return top value per usual
     - `push()` should push onto minimum stack if new value is <= top of minimum stack. (Pushing equal so we can pop equal values and still maintain the prior minimum.)
     - `pop()` should pop the minimum stack if existing top.value == minimum
  */
@@ -345,7 +345,7 @@ do {
  ## 3.4 Queue via Stacks
  ### Implement `MyQueue`, which implements a queue using two stacks.
  
- * Callout(Plan): The FIFO nature of a queue can be implemented by having "tail" and "head" stacks. When `enqueu`ing, we push the new element onto the "tail" stack. This means the first-in element will always be at the bottom of that stack. When `dequeu`ing, we `pop()` the top element of the "head" stack. If that stack is empty, we "move" the "tail" stack to the "head" stack. "Move" in this context means `pop`ping each element from the "tail" stack and `push`ing it onto the "head" stack. This will leave the "head" stack with the elments `pop`able in FIFO order.
+ * Callout(Plan): The FIFO nature of a queue can be implemented by having "tail" and "head" stacks. When `enqueu`ing, we push the new element onto the "tail" stack. This means the first-in element will always be at the bottom of that stack. When `dequeu`ing, we `pop()` the top element of the "head" stack. If that stack is empty, we "move" the "tail" stack to the "head" stack. "Move" in this context means `pop`ping each element from the "tail" stack and `push`ing it onto the "head" stack. This will leave the "head" stack with the elements `pop`able in FIFO order.
  */
 struct MyQueue<T> {
     var headStack = Stack<T>() // dequeue ops
@@ -414,7 +414,7 @@ print("o queue with next element dequeued: " + String(describing: myQ))
     In addition, to make things more efficient, we only need to "consolidate" the two stacks when we want to `pop` or `peek`.
 
  - Callout(Implementation Details for `push`):
-    1. While the sorted stack is not empty, compare new item to `top` of storted stack
+    1. While the sorted stack is not empty, compare new item to `top` of sorted stack
     2. if `item` > than `top`, pop sorted and push to minimums stack, and then continue the loop
     3. if `item` == `top`, push it onto the sorted stack
     4. if `item` < `top`, while minimums stack is not empty, compare to `top` of minimums stack
@@ -577,7 +577,6 @@ print("  sorted stackToSort: \(String(describing: stackToSort))")
     - keep head and tail pointers for enqueue and dequeue
     - `dequeueCat` removes and returns head of that queue, dog the same
     - `dequeueAny` removes and returns the one with the smallest priority value
- 
  */
 struct Animal: CustomStringConvertible {
     enum Species {
