@@ -1096,5 +1096,116 @@ print(bst1_4_6_pict)
 print("Arrays that could have created the above binary search tree: (trust me, it's correct)")
 print(process(node: bst1_4_6_root))
 
+/*: ---
+ ## 4.10 Check Subtrees
+ ### `T1` & `T2` are two very large subtrees, with `T1` much larger than `T2`. Create an algorithm to determine if `T2` is a subtree of `T1`. A tree, `T2`, is a subtree of `T1`, if there exists a node, `n`, in `T1` such that the subtree of `n` is identical (in values) to `T2`. That is, if you cut off the tree at node `n`, the two trees would be identical.
+
+ * Callout(Thoughts):
+     1. Need to find two nodes with the same value, and then check if their subtrees are identical
+     2. BFS through `T1` searching for a node where `T1`'s value equals `T2`'s root's value
+     3. When we find a node, compare the two subtrees to see if they are the same
+
+ - Callout(Book's "simple" solution):
+     1. Need to find two nodes with the same value, and then check if they are identical
+     2. Create a "flattened" representation of `T1` and `T2`
+     3. Check whether "flattened" `T1` contains "flattened" `T2`
+     4. If the flattened representations are `String`s, we can do this with `String.contains()` (Is that cheating?)
+     5. Since these trees are very large, is creating the "flattened" representation time and memory inefficient?
+ */
+func checkSubtrees<T: Comparable>(T1: BinaryTreeNode<T>?, T2: BinaryTreeNode<T>?) -> Bool {
+    guard T1 != nil else { // if T1 is empty, it can't contain a subtree
+        return false
+    }
+
+    guard T2 != nil else { // an empty T2 is always a subtree of T1 ;)
+        return true
+    }
+
+    guard T1 != T2 else {
+        return true
+    }
+
+    return checkSubtrees(T1: T1?.left, T2: T2) || checkSubtrees(T1: T1?.right, T2: T2)
+}
+
+func ==<T: Comparable>(lhs: BinaryTreeNode<T>?, rhs: BinaryTreeNode<T>?) -> Bool {
+    switch (lhs, rhs) {
+    case (nil, nil): // Empty trees are obviously equal in value
+        return true
+
+    case (_, nil): fallthrough
+    case (nil, _):
+        // if one is empty and the other is not, they can't be equal
+        return false
+
+    case let (l, r) where l?.value != r?.value:
+        return false
+
+    default:
+        return lhs?.left == rhs?.left && lhs?.right == rhs?.right
+    }
+}
+
+func !=<T: Comparable>(lhs: BinaryTreeNode<T>?, rhs: BinaryTreeNode<T>?) -> Bool {
+    return !(lhs == rhs)
+}
+
+func checkSubtrees2(T1: BinaryTreeNode<Character>, T2: BinaryTreeNode<Character>) -> Bool {
+    let flatT1 = flatten(T1)
+    let flatT2 = flatten(T2)
+
+    return flatT1.contains(flatT2)
+}
+
+func flatten(_ node: BinaryTreeNode<Character>?) -> String {
+    guard let n = node  else {
+        return String(Character(Unicode.Scalar(0)))
+    }
+
+    return String(n.value) + flatten(n.left) + flatten(n.right)
+}
+
+print("\n---------- 4.10 Check Subtrees ----------")
+var result: Bool
+let t = makeBinaryTree(from: "abcdefg")!
+result = checkSubtrees(T1: t, T2: t.left!)
+print("for binary tree, t, made from \"abcdefg\", checkSubtrees(T1: t, T2: t.left!) is \(result)")
+result = checkSubtrees2(T1: t, T2: t.left!)
+print("for binary tree, t, made from \"abcdefg\", checkSubtrees2(T1: t, T2: t.left!) is \(result)")
+
+result = checkSubtrees(T1: doiBTree, T2: doiBTree.left!.right!.left!)
+print("for binary tree, doiBtree, made from the text of the Declaration of Independence, checkSubtrees(T1: doiBTree, T2: doiBTree.left!.right!.left!) is \(result)")
+result = checkSubtrees2(T1: doiBTree, T2: doiBTree.left!.right!.left!)
+print("for binary tree, doiBtree, made from the text of the Declaration of Independence, checkSubtrees2(T1: doiBTree, T2: doiBTree.left!.right!.left!) is \(result)")
+
+
+let u = makeBinaryTree(from: "qyzf")!
+result = checkSubtrees(T1: t, T2: u)
+print("for binary tree, t, made from \"abcdefg\" and binary tree, u, made from \"qyzf\", checkSubtrees(T1: t, T2: u) is \(result)")
+result = checkSubtrees2(T1: t, T2: u)
+print("for binary tree, t, made from \"abcdefg\" and binary tree, u, made from \"qyzf\", checkSubtrees2(T1: t, T2: u) is \(result)")
+
+//: The code below is commented out because it takes a ton of time to execute. It's interesting to play with, though
+/*:
+ ```
+var start: Date
+var end: Date
+var delta: TimeInterval
+start = Date()
+print("beginning 'checkSubtrees' on Dracula at \(start)")
+result = checkSubtrees(T1: dracBTree, T2: dracBTree.left!.right!.left!.left!.right!.right!)
+end = Date()
+delta = end.timeIntervalSince(start)
+print("for binary tree, dracBtree, made from the text of the Dracula, checkSubtrees(T1: dracBTree, T2: dracBTree.left!.right!.left!.left!.right!.right!) is \(result) and took \(delta) seconds to determine that")
+
+start = Date()
+print("beginning 'checkSubtrees2' on Dracula at \(start)")
+result = checkSubtrees2(T1: dracBTree, T2: dracBTree.left!.right!.left!.left!.right!.right!)
+end = Date()
+delta = end.timeIntervalSince(start)
+print("for binary tree, dracBtree, made from the text of the Dracula, checkSubtrees2(T1: dracBTree, T2: dracBTree.left!.right!.left!.left!.right!.right!) is \(result) and took \(delta) seconds to determine that")
+```
+ */
+
 //: ---
 //: [Previous](@previous)

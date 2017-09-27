@@ -82,6 +82,44 @@ public func postOrderTraversal<T>(_ node: BinaryTreeNode<T>?, debug: Bool = fals
     }
 }
 
+/// Make a complete binary tree from the provided text
+///
+/// - Parameter string: the text to transform into a binary tree
+/// - Returns: the root node of the binary tree
+public func makeBinaryTree(from string: String) -> BinaryTreeNode<Character>? {
+    var rootNode: BinaryTreeNode<Character>?
+    var nodeQueue = [BinaryTreeNode<Character>]()
+
+    func hasBothChildren<T>(_ node: BinaryTreeNode<T>) -> Bool {
+        return node.left != nil && node.right != nil
+    }
+
+    for char in string.characters
+    {
+        let newNode = BinaryTreeNode(value: char)
+
+        if rootNode == nil {
+            rootNode = newNode
+        }
+        else {
+            if nodeQueue.first?.left == nil {
+                nodeQueue.first?.left = newNode
+            }
+            else if nodeQueue.first?.right == nil {
+                nodeQueue.first?.right = newNode
+            }
+
+            if hasBothChildren(nodeQueue.first!) {
+                nodeQueue.removeFirst()
+            }
+        }
+
+        nodeQueue.append(newNode)
+    }
+
+    return rootNode
+}
+
 // MARK: - 
 
 public class Graph<Element>: CustomStringConvertible {
@@ -150,4 +188,3 @@ public func breadthFirstSearch<T>(_ root: GraphNode<T>?) {
         }
     } while !toProcess.isEmpty()
 }
-
