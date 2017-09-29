@@ -313,12 +313,9 @@ func heightOf<T>(_ root: BinaryTreeNode<T>?) -> Int {
 }
 
 func createNodes(from string: String) -> [BinaryTreeNode<Character>] {
-    var retval = [BinaryTreeNode<Character>]()
-    for char in string.characters {
-        retval.append(BinaryTreeNode<Character>(value: char))
+    return string.characters.lazy.map { char in
+        BinaryTreeNode<Character>(value: char)
     }
-
-    return retval
 }
 
 print("\n---------- 4.4 Check Balanced ----------")
@@ -1041,6 +1038,10 @@ func process<T>(node: BinaryTreeNode<T>, reachables: [BinaryTreeNode<T>]? = nil,
         return [newPartial]
     }
 
+/*:
+The procedural code below implements step #4 of the "Thoughts/Plan" above. It has been replaced by the more "Swifty,"
+functional code below it.
+
     var results = [[T]]()
     for reachableNode in newReachables {
         let result = process(node: reachableNode,
@@ -1049,7 +1050,16 @@ func process<T>(node: BinaryTreeNode<T>, reachables: [BinaryTreeNode<T>]? = nil,
         results.append(contentsOf: result)
     }
     return results
+ */
+    let sequences = newReachables.map { reachableNode in
+        process(node: reachableNode,
+                reachables: newReachables.filter({ $0 !== reachableNode}),
+                partialResult: newPartial)
+    }
+
+    return sequences.flatMap({ $0 })
 }
+
 print("\n---------- 4.9 BST Sequences ----------")
 /*:
  we will use "valid binary tree #1" from `4.5` for our first test

@@ -132,7 +132,7 @@ func allPermutations(of testString: String) -> [String] {
 
     var permutations = [String]()
     for word in subStringPermutations {
-        var wordCharacters = String(word.characters).characters
+        var wordCharacters = word.characters
 
         for index in wordCharacters.indices {
             var wordCharactersCopy = wordCharacters
