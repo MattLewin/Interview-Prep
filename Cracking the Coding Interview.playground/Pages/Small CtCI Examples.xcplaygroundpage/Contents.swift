@@ -3,7 +3,7 @@
 import Foundation
 //: ## Unnecessary work (p. 68)
 //: - Example: Print all positive integer solutions to the equation `a^3 + b^3 = c^3 + d^3`
-let n = 100
+let n = 50
 
 //: - Note: The three solutions below are commented out because they are so inefficient
 /*:
@@ -67,42 +67,40 @@ let n = 100
  
  */
 
+let digitArray = Array(1...n)
 var cdValueMap = [Decimal: [(Int, Int)]]()
 
-for c in 1...n {
-    for d in 1...n {
+digitArray.map( { c in
+    digitArray.map( { d in
         let result = pow(Decimal(c), 3) + pow(Decimal(d), 3)
         guard var list = cdValueMap[result] else {
             cdValueMap[result] = [(c, d)]
-            continue
+            return
         }
 
         list.append((c, d))
-    }
-}
+    })
+})
 
-for a in 1...n {
-    for b in 1...n {
+digitArray.map( { (a) -> Void in
+    _ = digitArray.map({ (b) in
         let result = pow(Decimal(a), 3) + pow(Decimal(b), 3)
-        guard let list = cdValueMap[result] else { continue }
-        for (c, d) in list {
-            print("\(a)^3 + \(b)^3 = \(c)^3 + \(d)^3")
-        }
-    }
-}
-
+        guard let list = cdValueMap[result] else { return }
+        list.map({ print("\(a)^3 + \(b)^3 = \($0)^3 + \($1)^3") })
+    })
+})
 /*:
  Actually, once we have the map of all the `(c, d)` pairs, we can just use that directly. We don't need to generate the `(a, b)` pairs. Each `(a, b)` pair will already be in `cdValueMap`.
  */
 
 print("###################")
 
-for (_, list) in cdValueMap {
-    for (a, b) in list {
-        for (c, d) in list {
+cdValueMap.map { (_, list) in
+    list.map({ (a, b) in
+        list.map({ (c, d) in
             print("\(a)^3 + \(b)^3 = \(c)^3 + \(d)^3")
-        }
-    }
+        })
+    })
 }
 
 //: ## Optimize & Solve Technique #4: Base Case and Build (p. 71)
@@ -117,6 +115,7 @@ for (_, list) in cdValueMap {
  */
 
 let testString = "abcdefg"
+//let testString = "abcde"
 
 func allPermutations(of testString: String) -> [String] {
 
