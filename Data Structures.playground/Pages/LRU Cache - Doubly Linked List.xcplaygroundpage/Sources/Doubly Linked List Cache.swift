@@ -71,7 +71,7 @@ class DoublyLinkedList<T> {
     }
 }
 
-class LRUCache<Key: Hashable, Value> {
+public class LRUCache<Key: Hashable, Value> {
 
     private struct CachePayload {
         let key: Key
@@ -83,11 +83,11 @@ class LRUCache<Key: Hashable, Value> {
 
     private let capacity: Int
 
-    init(capacity: Int) {
+    public init(capacity: Int) {
         self.capacity = max(0, capacity)
     }
 
-    func setValue(_ value: Value, for key: Key) {
+    public func setValue(_ value: Value, for key: Key) {
         let payload = CachePayload(key: key, value: value)
 
         if let node = nodesDict[key] {
@@ -107,18 +107,10 @@ class LRUCache<Key: Hashable, Value> {
         }
     }
 
-    func getValue(for key: Key) -> Value? {
+    public func getValue(for key: Key) -> Value? {
         guard let node = nodesDict[key] else { return nil }
 
         list.moveToHead(node)
         return node.value.value
     }
 }
-
-let cache = LRUCache<Int, String>(capacity: 2)
-cache.getValue(for: 1)
-cache.setValue("one", for: 1)
-cache.setValue("two", for: 2)
-cache.setValue("forty-two", for: 42)
-cache.getValue(for: 1)
-cache.getValue(for: 42)
