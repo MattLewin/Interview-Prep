@@ -3,5 +3,6 @@
     <pages>
         <page name='LRU Cache - Doubly Linked List'/>
         <page name='LRU Cache - Vector'/>
+        <page name='Binary Heap'/>
     </pages>
 </playground>
