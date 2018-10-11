@@ -313,7 +313,7 @@ func heightOf<T>(_ root: BinaryTreeNode<T>?) -> Int {
 }
 
 func createNodes(from string: String) -> [BinaryTreeNode<Character>] {
-    return string.characters.lazy.map { char in
+    return string.lazy.map { char in
         BinaryTreeNode<Character>(value: char)
     }
 }

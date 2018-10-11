@@ -53,7 +53,7 @@ public func makeCharacterList(count: Int) -> ListNode<Character> {
 public func makeListFrom(_ string: String) -> ListNode<Character> {
     var list: ListNode<Character>?
 
-    for char in string.characters.reversed() {
+    for char in string.reversed() {
         let nextNode = ListNode<Character>(value: char)
         nextNode.next = list
         list = nextNode

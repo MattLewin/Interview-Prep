@@ -8,7 +8,7 @@ import Foundation
 
 func allCharactersUnique(in string: String) -> Bool {
     var charSet = Set<Character>()
-    for character in string.characters {
+    for character in string {
         guard !charSet.contains(character) else { return false }
         charSet.insert(character)
     }
@@ -23,7 +23,7 @@ allCharactersUnique(in: "Example: 1.1 **Is Unique:** Implement an algorithm to d
 //: - Example: What if you can't use additional data structures?
 
 func allCharactersUnique2(in string: String) -> Bool {
-    let sortedChars = string.characters.sorted()
+    let sortedChars = string.sorted()
     var previousChar = sortedChars.first
     for char in sortedChars.dropFirst() {
         if char == previousChar { return false }
@@ -71,7 +71,7 @@ allCharactersUnique3(in: "Example: 1.1 **Is Unique:** Implement an algorithm to 
 extension String {
     func isPermutation(of string: String) -> Bool {
         var charDict = [Character: Int]()
-        for char in string.characters {
+        for char in string {
             guard let charCount = charDict[char] else {
                 charDict[char] = 1
                 continue
@@ -80,7 +80,7 @@ extension String {
             charDict[char] = charCount + 1
         }
 
-        for char in self.characters {
+        for char in self {
             guard let charCount = charDict[char] else { return false }
             if charCount == 1 {
                 charDict.removeValue(forKey: char)
@@ -168,8 +168,8 @@ func isPalindrome(_ string: String) -> Bool {
     var characterCount = 0
     var charSet = Set<Character>()
 
-    for char in string.lowercased().characters {
-        guard char != " ".characters.first else { continue }
+    for char in string.lowercased() {
+        guard char != " ".first else { continue }
 
         characterCount += 1
 
@@ -205,7 +205,7 @@ isPalindrome("tact coa")
  */
 
 func isOneAway(_ s1: String, _ s2: String) -> Bool {
-    switch s1.characters.count - s2.characters.count {
+    switch s1.count - s2.count {
     case 0: // same length
         return processSameLength(s1, s2)
 
@@ -227,13 +227,13 @@ func processSameLength(_ s1: String, _ s2: String) -> Bool {
     var s2Copy = s2
 
     repeat {
-        let s1Head = s1Copy.characters.removeFirst()
-        let s2Head = s2Copy.characters.removeFirst()
+        let s1Head = s1Copy.removeFirst()
+        let s2Head = s2Copy.removeFirst()
 
         guard s1Head != s2Head else { continue }
         if changeFound == true { return false }
         changeFound = true
-    } while s1Copy.characters.count > 0
+    } while s1Copy.count > 0
 
     return true
 }
@@ -244,16 +244,16 @@ func processOneAway(longer s1: String, shorter s2: String) -> Bool {
     var s2Copy = s2
 
     repeat {
-        let s1Head = s1Copy.characters.removeFirst()
-        let s2Head = s2Copy.characters.first
+        let s1Head = s1Copy.removeFirst()
+        let s2Head = s2Copy.first
 
         guard s1Head != s2Head else {
-            s2Copy.characters.removeFirst()
+            s2Copy.removeFirst()
             continue
         }
         if changeFound == true { return false }
         changeFound = true
-    } while s1Copy.characters.count > 0
+    } while s1Copy.count > 0
 
     return true
 }
@@ -276,7 +276,7 @@ func compress(_ str: String) -> String {
     var previousChar: Character?
     var count = 0
 
-    for char in str.characters {
+    for char in str {
         if previousChar == nil {
             previousChar = char
             count = 1
@@ -286,16 +286,16 @@ func compress(_ str: String) -> String {
             count += 1
         }
         else { // new character
-            result.append(contentsOf: count.description.characters)
+            result.append(contentsOf: count.description)
             previousChar = char
             count = 1
             result.append(char)
         }
     }
 
-    result.append(contentsOf: count.description.characters)
+    result.append(contentsOf: count.description)
 
-    if result.count > str.characters.count {
+    if result.count > str.count {
         return str
     }
     else {
@@ -469,7 +469,7 @@ zeroOutRowsAndColumns(matrix2)
     The first solution below is an implementation of this idea. The second one is my craptastic initial solution.
  */
 func isRotation2(_ s2: String, of s1: String) -> Bool {
-    guard s1.characters.count > 0, s2.characters.count == s1.characters.count else { return false }
+    guard s1.count > 0, s2.count == s1.count else { return false }
 
     let s1s1 = s1 + s1
     return s1s1.contains(s2) // `contains` is effectively, `isSubstring`
@@ -480,8 +480,8 @@ isRotation2("WATERBOTTLE", of: "WATERBOTTLE")
 isRotation2("ERBOTTLEWAT", of: "WATERBUTTLE")
 
 func BSisRotation(_ s2: String, of s1: String) -> Bool {
-    let s1chars = s1.characters
-    let s2chars = s2.characters
+    let s1chars = s1
+    let s2chars = s2
     guard s1chars.count == s2chars.count else { return false }
 
     var s2index = 1

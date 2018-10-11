@@ -119,9 +119,9 @@ let testString = "abcdefg"
 
 func allPermutations(of testString: String) -> [String] {
 
-    let characters = testString.characters
+    let characters = testString
 
-    if testString.characters.count == 1 {
+    if testString.count == 1 {
         return [testString]
     }
 
@@ -131,7 +131,7 @@ func allPermutations(of testString: String) -> [String] {
 
     var permutations = [String]()
     for word in subStringPermutations {
-        var wordCharacters = word.characters
+        var wordCharacters = word
 
         for index in wordCharacters.indices {
             var wordCharactersCopy = wordCharacters

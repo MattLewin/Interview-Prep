@@ -496,7 +496,7 @@ print("\n\n---------- 3.5 Sorted Stack ----------\n")
 var ss = SortedStack<Character>()
 print("Testing SortedStack using the characters in the string, \"STACK\"")
 print("SortedStack: \(String(describing: ss))")
-for char in "STACK".characters {
+for char in "STACK" {
     ss.push(char)
     print("pushed \(char). SortedStack: \(String(describing: ss))")
 }
@@ -506,7 +506,7 @@ print("SortedStack: \(String(describing: ss))")
 ss = SortedStack<Character>()
 print("\nTesting SortedStack using the characters in the string, \"ABDCE\"")
 print("SortedStack: \(String(describing: ss))")
-for char in "ABDCE".characters {
+for char in "ABDCE" {
     ss.push(char)
     print("pushed \(char). SortedStack: \(String(describing: ss))")
 }
@@ -547,7 +547,7 @@ func sort<T:Comparable>(_ s1: inout Stack<T>) {
 print("\n\n---------- 3.5 (redux) Sort a Stack ----------\n")
 var stackToSort = Stack<Character>()
 print("testing sort(:) with the characters in the string, \"STACK\"")
-for char in "STACK".characters {
+for char in "STACK" {
     stackToSort.push(char)
 }
 print("unsorted stackToSort: \(String(describing: stackToSort))")
@@ -558,7 +558,7 @@ print("")
 
 stackToSort = Stack<Character>()
 print("testing sort(:) with the characters in the string, \"ABDCE\"")
-for char in "ABDCE".characters {
+for char in "ABDCE" {
     stackToSort.push(char)
 }
 print("unsorted stackToSort: \(String(describing: stackToSort))")

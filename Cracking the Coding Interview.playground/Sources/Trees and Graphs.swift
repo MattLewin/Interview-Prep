@@ -94,7 +94,7 @@ public func makeBinaryTree(from string: String) -> BinaryTreeNode<Character>? {
         return node.left != nil && node.right != nil
     }
 
-    for char in string.characters
+    for char in string
     {
         let newNode = BinaryTreeNode(value: char)
 
