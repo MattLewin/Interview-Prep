@@ -10,4 +10,7 @@
    <FileRef
       location = "group:Cracking the Coding Interview.playground">
    </FileRef>
+   <FileRef
+      location = "group:Refreshing.playground">
+   </FileRef>
 </Workspace>
